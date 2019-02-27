@@ -1,19 +1,33 @@
 package jp.nk5.saifu2;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
-public class MainActivity extends Activity {
+import jp.nk5.saifu2.fragment.MainFragment;
+import jp.nk5.saifu2.fragment.MenuFragment;
+
+public class MainActivity extends AppCompatActivity implements MenuFragment.EventListener {
+
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ListView listView = findViewById(R.id.listView1);
-        listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new String[]{"aaa", "bbb"}));
+        fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.layout_menu, new MenuFragment(), MenuFragment.getTagName())
+                .replace(R.id.layout_main, new MainFragment(), MainFragment.getTagName())
+                .commit();
+    }
+
+    public void onClickMenuItem(long id)
+    {
+        Toast.makeText(this, String.valueOf(id), Toast.LENGTH_SHORT).show();
+        //MenuFragment fragment = (MenuFragment) fragmentManager.findFragmentByTag("TAG_MENU");
     }
 
 }
