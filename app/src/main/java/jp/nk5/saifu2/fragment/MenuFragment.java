@@ -31,7 +31,7 @@ public class MenuFragment extends Fragment implements ListView.OnItemClickListen
         final View layout = inflater.inflate(R.layout.fragment_menu, container, false);
 
         ListView listView = layout.findViewById(R.id.listView1);
-        listView.setAdapter(new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, new String[]{"aaa", "bbb"}));
+        listView.setAdapter(new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, new String[]{"TOP", "SHOP", "BANK", "ACCOUNT BOOK"}));
         listView.setOnItemClickListener(this);
         return layout;
     }
