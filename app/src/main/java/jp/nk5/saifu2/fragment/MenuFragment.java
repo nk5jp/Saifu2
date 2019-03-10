@@ -11,11 +11,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.List;
+
 import jp.nk5.saifu2.R;
 
 public class MenuFragment extends Fragment implements ListView.OnItemClickListener {
 
     private EventListener listener;
+    private List<String> menuList;
 
     public static String getTagName () {
         return "TAG_MENU";
@@ -31,7 +34,7 @@ public class MenuFragment extends Fragment implements ListView.OnItemClickListen
         final View layout = inflater.inflate(R.layout.fragment_menu, container, false);
 
         ListView listView = layout.findViewById(R.id.listView1);
-        listView.setAdapter(new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, new String[]{"TOP", "SHOP", "BANK", "ACCOUNT BOOK"}));
+        listView.setAdapter(new ArrayAdapter<>(this.getContext(), android.R.layout.simple_list_item_1, new String[]{"SHOP", "BANK", "ACCOUNT BOOK"}));
         listView.setOnItemClickListener(this);
         return layout;
     }

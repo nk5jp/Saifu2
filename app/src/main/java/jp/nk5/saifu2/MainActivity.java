@@ -1,7 +1,9 @@
 package jp.nk5.saifu2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
@@ -26,8 +28,10 @@ public class MainActivity extends AppCompatActivity implements MenuFragment.Even
 
     public void onClickMenuItem(long id)
     {
-        Toast.makeText(this, String.valueOf(id), Toast.LENGTH_SHORT).show();
-        //MenuFragment fragment = (MenuFragment) fragmentManager.findFragmentByTag("TAG_MENU");
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawers();
+        Intent intent = new Intent(this, BankActivity.class);
+        startActivity(intent);
     }
 
 }
