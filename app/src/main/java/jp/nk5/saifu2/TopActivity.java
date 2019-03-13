@@ -27,6 +27,8 @@ public class TopActivity extends AppCompatActivity implements TopMenuFragment.Ev
 
     public void onClickMenuItem(long id)
     {
+        //エラー回避のための仮実装，あとで消す．
+        fragmentManager.findFragmentByTag(TopFragment.getTagName());
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawers();
         Intent intent = new Intent(this, AccountActivity.class);
