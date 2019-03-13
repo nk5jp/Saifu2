@@ -5,7 +5,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="jp.nk5.saifu2.MainActivity">
+    tools:context="jp.nk5.saifu2.TopActivity">
 
     <FrameLayout
         android:id="@+id/layout_main"

@@ -1,6 +1,5 @@
 package jp.nk5.saifu2;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +19,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 public class MainActivityTest {
 
     @Rule
-    public ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class);
+    public ActivityTestRule<TopActivity> activityRule = new ActivityTestRule<>(TopActivity.class);
 
     @Test
     public void listGoesOverTheWorld() {

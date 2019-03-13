@@ -1,4 +1,4 @@
-package jp.nk5.saifu2.fragment;
+package jp.nk5.saifu2.view;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import jp.nk5.saifu2.R;
 
 
-public class MainFragment extends Fragment {
+public class TopFragment extends Fragment {
 
     public static String getTagName()
     {
@@ -20,7 +20,7 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container  , Bundle savedInstanceState)
     {
-        final View layout = inflater.inflate(R.layout.fragment_main, container, false);
+        final View layout = inflater.inflate(R.layout.fragment_top, container, false);
         return layout;
     }
 }

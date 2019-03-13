@@ -1,4 +1,4 @@
-package jp.nk5.saifu2.fragment;
+package jp.nk5.saifu2.view;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,7 +15,7 @@ import java.util.List;
 
 import jp.nk5.saifu2.R;
 
-public class MenuFragment extends Fragment implements ListView.OnItemClickListener {
+public class TopMenuFragment extends Fragment implements ListView.OnItemClickListener {
 
     private EventListener listener;
     private List<String> menuList;
