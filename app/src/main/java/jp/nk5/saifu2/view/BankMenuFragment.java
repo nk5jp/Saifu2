@@ -12,9 +12,10 @@ import android.widget.ListView;
 
 import jp.nk5.saifu2.R;
 import jp.nk5.saifu2.adapter.MenuListAdapter;
-import jp.nk5.saifu2.view.viewmodel.TopMenu;
+import jp.nk5.saifu2.view.viewmodel.BankMenu;
 
-public class TopMenuFragment extends Fragment implements ListView.OnItemClickListener {
+
+public class BankMenuFragment extends Fragment implements ListView.OnItemClickListener {
 
     private EventListener listener;
 
@@ -35,7 +36,7 @@ public class TopMenuFragment extends Fragment implements ListView.OnItemClickLis
         Context context = this.getContext();
         if (context != null)
         {
-            listView.setAdapter(new MenuListAdapter(context, android.R.layout.simple_list_item_1, TopMenu.values()));
+            listView.setAdapter(new MenuListAdapter(context, android.R.layout.simple_list_item_1, BankMenu.values()));
             listView.setOnItemClickListener(this);
         }
         return layout;
