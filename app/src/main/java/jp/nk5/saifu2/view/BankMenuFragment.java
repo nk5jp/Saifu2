@@ -18,9 +18,10 @@ import jp.nk5.saifu2.view.viewmodel.BankMenu;
 public class BankMenuFragment extends Fragment implements ListView.OnItemClickListener {
 
     private EventListener listener;
+    private ListView listView;
 
     public static String getTagName () {
-        return "TAG_MENU";
+        return "TAG_BANK_MENU";
     }
 
     public interface EventListener {
@@ -32,7 +33,7 @@ public class BankMenuFragment extends Fragment implements ListView.OnItemClickLi
     {
         final View layout = inflater.inflate(R.layout.fragment_menu, container, false);
 
-        ListView listView = layout.findViewById(R.id.listView1);
+        listView = layout.findViewById(R.id.listView1);
         Context context = this.getContext();
         if (context != null)
         {

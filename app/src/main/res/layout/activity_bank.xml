@@ -5,12 +5,26 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="jp.nk5.saifu2.AccountActivity">
+    tools:context="jp.nk5.saifu2.BankActivity">
 
-    <FrameLayout
-        android:id="@+id/layout_main"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/layout_form"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/layout_information"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/layout_menu"

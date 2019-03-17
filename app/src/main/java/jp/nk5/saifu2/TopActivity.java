@@ -31,7 +31,7 @@ public class TopActivity extends AppCompatActivity implements TopMenuFragment.Ev
         fragmentManager.findFragmentByTag(TopFragment.getTagName());
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawers();
-        Intent intent = new Intent(this, AccountActivity.class);
+        Intent intent = new Intent(this, BankActivity.class);
         startActivity(intent);
     }
 
