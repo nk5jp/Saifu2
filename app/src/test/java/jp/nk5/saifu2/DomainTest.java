@@ -17,20 +17,20 @@ public class DomainTest {
     @Test(expected = Exception.class)
     public void AccountIsNotPermittedBlankName() throws Exception
     {
-        Account account = new Account(1, "", 100);
+        Account account = new Account(1, "", 100, true);
     }
 
     @Test
     public void AccountCanMakeOriginalString() throws Exception
     {
-        Account account = new Account(1, "testName", 1900);
+        Account account = new Account(1, "testName", 1900, true);
         assertEquals("testName:1,900", account.toString());
     }
 
     @Test
     public void IfAccountIsNotPersistedYet_IdIsSpecifiedValue() throws Exception
     {
-        Account account = new Account(SpecificId.NotPersisted.getId(), "temp", 100);
+        Account account = new Account(SpecificId.NotPersisted.getId(), "temp", 100, true);
         assertEquals(-1, account.getId());
     }
 

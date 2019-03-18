@@ -4,8 +4,9 @@ import java.util.List;
 
 public interface AccountRepository {
 
-    void setAccount(int id, String name);
-    Account getAccount(int id);
-    List<Account> getAllAccount();
-    List<Account> getAllValidAccount();
+    void setAccount(String name) throws Exception;
+    void updateAccount(int id, boolean isOpened) throws Exception;
+    Account getAccount(int id) throws Exception;
+    List<Account> getAllAccount() throws Exception;
+    List<Account> getAllValidAccount() throws Exception;
 }
