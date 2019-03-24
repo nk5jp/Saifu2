@@ -1,5 +1,6 @@
 package jp.nk5.saifu2;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -7,12 +8,21 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import jp.nk5.saifu2.service.OpeningAccountService;
 import jp.nk5.saifu2.view.AccountFragment;
 import jp.nk5.saifu2.view.BankMenuFragment;
 import jp.nk5.saifu2.view.OpeningAccountFragment;
 import jp.nk5.saifu2.view.TopFragment;
 
 public class BankActivity extends AppCompatActivity implements BankMenuFragment.EventListener {
+
+    private static OpeningAccountService service;
+
+    public interface UpdateViewListener
+    {
+        void showError(String message);
+        void updateView();
+    }
 
     private FragmentManager fragmentManager;
 
@@ -29,6 +39,19 @@ public class BankActivity extends AppCompatActivity implements BankMenuFragment.
                 .commit();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        try {
+            AccountFragment fragment = (AccountFragment) fragmentManager.findFragmentByTag(AccountFragment.getTagName());
+            service = OpeningAccountService.getInstance(this,
+                    this,
+                    fragment.getViewModel());
+        } catch (Exception e) {
+            super.onDestroy();
+        }
+    }
+
     public void onClickMenuItem(long id)
     {
         //エラー回避のための仮実装，あとで消す．
@@ -40,7 +63,19 @@ public class BankActivity extends AppCompatActivity implements BankMenuFragment.
 
     public void onClickAddButton(View view)
     {
-        Toast.makeText(this, "ONCLICK!!", Toast.LENGTH_SHORT).show();
+        service.addAccount("aaa");
     }
+
+    public void showError (String message)
+    {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    public void updateView()
+    {
+        AccountFragment fragment = (AccountFragment) fragmentManager.findFragmentByTag(AccountFragment.getTagName());
+        fragment.updateView();
+    }
+
 
 }

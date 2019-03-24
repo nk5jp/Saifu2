@@ -8,17 +8,18 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import jp.nk5.saifu2.view.viewmodel.Menu;
+import java.util.List;
 
-public class MenuListAdapter extends ArrayAdapter<Menu> {
+import jp.nk5.saifu2.domain.Account;
+
+public class AccountListAdapter extends ArrayAdapter<Account> {
 
     private LayoutInflater layoutInflater;
 
-    public MenuListAdapter(@NonNull Context context, int resource, @NonNull Menu[] objects) {
+    public AccountListAdapter(@NonNull Context context, int resource, @NonNull List<Account> objects) {
         super(context, resource, objects);
         this.layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
-
 
     @Override
     @NonNull
@@ -29,13 +30,12 @@ public class MenuListAdapter extends ArrayAdapter<Menu> {
             view = layoutInflater.inflate(android.R.layout.simple_list_item_1, null);
         }
 
-        Menu menu = getItem(position);
-        if (menu != null)
+        Account account = getItem(position);
+        if (account != null)
         {
             TextView textView = view.findViewById(android.R.id.text1);
-            textView.setText(menu.getName());
+            textView.setText(account.toString());
         }
         return view;
     }
-
 }

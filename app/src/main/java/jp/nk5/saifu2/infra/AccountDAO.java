@@ -44,7 +44,6 @@ public class AccountDAO extends DAO <Account> {
     public ContentValues transformEntityToValues(Account entity) throws Exception
     {
         ContentValues values = new ContentValues();
-        values.put("id", entity.getId());
         values.put("name", entity.getName());
         values.put("balance", entity.getBalance());
         values.put("isOpened", SQLiteBoolean.getInt(entity.isOpened()));

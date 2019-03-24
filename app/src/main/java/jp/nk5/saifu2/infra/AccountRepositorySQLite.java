@@ -3,6 +3,7 @@ package jp.nk5.saifu2.infra;
 import android.content.Context;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -15,7 +16,6 @@ import jp.nk5.saifu2.domain.Account;
 public class AccountRepositorySQLite implements AccountRepository {
 
     private static AccountRepositorySQLite instance;
-    private Context context;
     private AccountDAO dao;
     private List<Account> accounts;
 
@@ -30,11 +30,9 @@ public class AccountRepositorySQLite implements AccountRepository {
 
     private AccountRepositorySQLite (Context context) throws Exception
     {
-        this.context = context;
         dao = new AccountDAO(context);
         accounts = dao.readAll();
     }
-
 
     @Override
     public void setAccount(String name) throws Exception {
@@ -45,21 +43,30 @@ public class AccountRepositorySQLite implements AccountRepository {
 
     @Override
     public void updateAccount(int id,  boolean isOpened) throws Exception {
-        Account account = accounts.stream()
+        Optional<Account> optional = accounts.stream()
                 .filter(a -> a.getId() == id)
-                .findFirst()
-                .get();
-        account.setOpened(isOpened);
-        dao.updateAccount(account);
+                .findFirst();
+        if (optional.isPresent()) {
+            Account account = optional.get();
+            account.setOpened(isOpened);
+            dao.updateAccount(account);
+        } else {
+            throw new NoSuchElementException();
+        }
     }
 
     @Override
     public Account getAccount(int id) throws Exception
     {
-        return accounts.stream()
+        Optional<Account> optional = accounts.stream()
                 .filter(a -> a.getId() == id)
-                .findFirst()
-                .get();
+                .findFirst();
+        if (optional.isPresent())
+        {
+            return optional.get();
+        } else {
+            throw new NoSuchElementException();
+        }
     }
 
     @Override
@@ -72,7 +79,7 @@ public class AccountRepositorySQLite implements AccountRepository {
     public List<Account> getAllValidAccount()
     {
         return accounts.stream()
-                .filter(a -> a.isOpened())
+                .filter(Account::isOpened)
                 .collect(Collectors.toList());
     }
 

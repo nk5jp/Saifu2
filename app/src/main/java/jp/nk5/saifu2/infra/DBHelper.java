@@ -12,7 +12,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final int DB_VERSION = 1;
 
     private static final String CREATE_ACCOUNT_TABLE = "create table account ( " +
-            "id integer primary key not null, " +
+            "id integer primary key autoincrement, " +
             "name text not null, " +
             "balance integer not null, " +
             "isOpened integer not null);";
