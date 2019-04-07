@@ -1,11 +1,11 @@
 package jp.nk5.saifu2;
 
-import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import jp.nk5.saifu2.service.OpeningAccountService;
@@ -18,12 +18,6 @@ public class BankActivity extends AppCompatActivity implements BankMenuFragment.
 
     private static OpeningAccountService service;
 
-    public interface UpdateViewListener
-    {
-        void showError(String message);
-        void updateView();
-    }
-
     private FragmentManager fragmentManager;
 
     @Override
@@ -32,6 +26,7 @@ public class BankActivity extends AppCompatActivity implements BankMenuFragment.
         setContentView(R.layout.activity_bank);
 
         fragmentManager = getSupportFragmentManager();
+
         fragmentManager.beginTransaction()
                 .replace(R.id.layout_menu, new BankMenuFragment(), BankMenuFragment.getTagName())
                 .replace(R.id.layout_form, new OpeningAccountFragment(), OpeningAccountFragment.getTagName())
@@ -44,9 +39,10 @@ public class BankActivity extends AppCompatActivity implements BankMenuFragment.
         super.onStart();
         try {
             AccountFragment fragment = (AccountFragment) fragmentManager.findFragmentByTag(AccountFragment.getTagName());
-            service = OpeningAccountService.getInstance(this,
+            service = new OpeningAccountService(this,
                     this,
                     fragment.getViewModel());
+            service.getAllAccount();
         } catch (Exception e) {
             super.onDestroy();
         }
@@ -63,7 +59,12 @@ public class BankActivity extends AppCompatActivity implements BankMenuFragment.
 
     public void onClickAddButton(View view)
     {
-        service.addAccount("aaa");
+        try {
+            String name = getStringFromTextView(R.id.editText1);
+            service.addAccount(name);
+        } catch (Exception e) {
+            showError("enter NAME");
+        }
     }
 
     public void showError (String message)
@@ -74,7 +75,18 @@ public class BankActivity extends AppCompatActivity implements BankMenuFragment.
     public void updateView()
     {
         AccountFragment fragment = (AccountFragment) fragmentManager.findFragmentByTag(AccountFragment.getTagName());
+        if (fragment != null) {
+            fragment.updateView();
+        }
         fragment.updateView();
+    }
+
+    private String getStringFromTextView (int id) throws Exception
+    {
+        EditText view = findViewById(id);
+        String text = view.getText().toString();
+        if (text.equals("")) throw new Exception();
+        return text;
     }
 
 

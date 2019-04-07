@@ -18,16 +18,7 @@ public class OpeningAccountService {
     private AccountRepository repository;
     private AccountViewModel viewModel;
 
-    public static OpeningAccountService getInstance(Context context, BankActivity listener, AccountViewModel viewModel) throws Exception
-    {
-        if (instance == null)
-        {
-            instance = new OpeningAccountService(context, listener, viewModel);
-        }
-        return instance;
-    }
-
-    private OpeningAccountService(Context context, BankActivity listener, AccountViewModel viewModel) throws Exception
+    public OpeningAccountService(Context context, BankActivity listener, AccountViewModel viewModel) throws Exception
     {
         this.repository = AccountRepositorySQLite.getInstance(context);
         this.listener = listener;
@@ -46,14 +37,14 @@ public class OpeningAccountService {
         }
     }
 
-    public List<Account> getAllAccount()
+    public void getAllAccount()
     {
         try
         {
-            return repository.getAllAccount();
+            viewModel.setAccounts(repository.getAllAccount());
+            listener.updateView();
         } catch (Exception e) {
             listener.showError(e.getMessage());
-            return new ArrayList<>();
         }
     }
 }
