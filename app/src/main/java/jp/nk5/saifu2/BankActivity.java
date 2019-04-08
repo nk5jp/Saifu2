@@ -12,11 +12,13 @@ import jp.nk5.saifu2.service.OpeningAccountService;
 import jp.nk5.saifu2.view.AccountFragment;
 import jp.nk5.saifu2.view.BankMenuFragment;
 import jp.nk5.saifu2.view.OpeningAccountFragment;
-import jp.nk5.saifu2.view.TopFragment;
+import jp.nk5.saifu2.view.TransferFragment;
+import jp.nk5.saifu2.view.viewmodel.BankMenu;
 
 public class BankActivity extends AppCompatActivity implements BankMenuFragment.EventListener {
 
     private static OpeningAccountService service;
+    private AccountFragment accountFragment;
 
     private FragmentManager fragmentManager;
 
@@ -27,10 +29,12 @@ public class BankActivity extends AppCompatActivity implements BankMenuFragment.
 
         fragmentManager = getSupportFragmentManager();
 
+        accountFragment = new AccountFragment();
+
         fragmentManager.beginTransaction()
                 .replace(R.id.layout_menu, new BankMenuFragment(), BankMenuFragment.getTagName())
                 .replace(R.id.layout_form, new OpeningAccountFragment(), OpeningAccountFragment.getTagName())
-                .replace(R.id.layout_information, new AccountFragment(), AccountFragment.getTagName())
+                .replace(R.id.layout_information, accountFragment, AccountFragment.getTagName())
                 .commit();
     }
 
@@ -39,22 +43,39 @@ public class BankActivity extends AppCompatActivity implements BankMenuFragment.
         super.onStart();
         try {
             AccountFragment fragment = (AccountFragment) fragmentManager.findFragmentByTag(AccountFragment.getTagName());
-            service = new OpeningAccountService(this,
-                    this,
-                    fragment.getViewModel());
-            service.getAllAccount();
+            if (fragment != null)
+            {
+                service = new OpeningAccountService(this,
+                        this,
+                        fragment.getViewModel());
+                service.getAllAccount();
+            }
         } catch (Exception e) {
             super.onDestroy();
         }
     }
 
-    public void onClickMenuItem(long id)
+    public void onClickMenuItem(BankMenu menu)
     {
-        //エラー回避のための仮実装，あとで消す．
-        fragmentManager.findFragmentByTag(TopFragment.getTagName());
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawers();
-        Toast.makeText(this, String.valueOf(id), Toast.LENGTH_SHORT).show();
+        switch (menu)
+        {
+            case ACCOUNT:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.layout_form, new OpeningAccountFragment(), OpeningAccountFragment.getTagName())
+                        .replace(R.id.layout_information, accountFragment, AccountFragment.getTagName())
+                        .commit();
+                break;
+            case TRANSFER:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.layout_form, new TransferFragment(), TransferFragment.getTagName())
+                        .replace(R.id.layout_information, accountFragment, AccountFragment.getTagName())
+                        .commit();
+                break;
+            case TRANSFER_HISTORY:
+                break;
+        }
     }
 
     public void onClickAddButton(View view)
@@ -69,7 +90,7 @@ public class BankActivity extends AppCompatActivity implements BankMenuFragment.
 
     public void showError (String message)
     {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     public void updateView()
@@ -77,8 +98,9 @@ public class BankActivity extends AppCompatActivity implements BankMenuFragment.
         AccountFragment fragment = (AccountFragment) fragmentManager.findFragmentByTag(AccountFragment.getTagName());
         if (fragment != null) {
             fragment.updateView();
+        } else {
+            showError("failed to find AccountFragment");
         }
-        fragment.updateView();
     }
 
     private String getStringFromTextView (int id) throws Exception

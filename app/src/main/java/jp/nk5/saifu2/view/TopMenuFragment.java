@@ -23,7 +23,7 @@ public class TopMenuFragment extends Fragment implements ListView.OnItemClickLis
     }
 
     public interface EventListener {
-        void onClickMenuItem(long id);
+        void onClickMenuItem(TopMenu menu);
     }
 
     @Override
@@ -53,13 +53,8 @@ public class TopMenuFragment extends Fragment implements ListView.OnItemClickLis
     }
 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        //Budget budget = ((PlanActualDTO) parent.getItemAtPosition(position)).getBudget();
-        //int selectedId = budget.getId();
-        //String name = budget.getName();
-        //int amount = budget.getAmount();
-        //boolean isValid = budget.isValid();
-        //controller.clearBudget(selectedId, name, amount, isValid);
-        listener.onClickMenuItem(id);
+        TopMenu menu = (TopMenu) parent.getItemAtPosition(position);
+        listener.onClickMenuItem(menu);
     }
 
 }

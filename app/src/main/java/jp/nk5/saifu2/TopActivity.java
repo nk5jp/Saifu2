@@ -8,31 +8,36 @@ import android.support.v7.app.AppCompatActivity;
 
 import jp.nk5.saifu2.view.TopFragment;
 import jp.nk5.saifu2.view.TopMenuFragment;
+import jp.nk5.saifu2.view.viewmodel.TopMenu;
 
 public class TopActivity extends AppCompatActivity implements TopMenuFragment.EventListener {
-
-    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_top);
 
-        fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.layout_menu, new TopMenuFragment(), TopMenuFragment.getTagName())
                 .replace(R.id.layout_main, new TopFragment(), TopFragment.getTagName())
                 .commit();
     }
 
-    public void onClickMenuItem(long id)
+    public void onClickMenuItem(TopMenu menu)
     {
-        //エラー回避のための仮実装，あとで消す．
-        fragmentManager.findFragmentByTag(TopFragment.getTagName());
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawers();
-        Intent intent = new Intent(this, BankActivity.class);
-        startActivity(intent);
+        switch (menu)
+        {
+            case ACCOUNT_BOOK:
+                break;
+            case SHOP:
+                break;
+            case BANK:
+                Intent intent = new Intent(this, BankActivity.class);
+                startActivity(intent);
+                break;
+        }
     }
-
 }

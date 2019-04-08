@@ -25,7 +25,7 @@ public class BankMenuFragment extends Fragment implements ListView.OnItemClickLi
     }
 
     public interface EventListener {
-        void onClickMenuItem(long id);
+        void onClickMenuItem(BankMenu menu);
     }
 
     @Override
@@ -55,13 +55,8 @@ public class BankMenuFragment extends Fragment implements ListView.OnItemClickLi
     }
 
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        //Budget budget = ((PlanActualDTO) parent.getItemAtPosition(position)).getBudget();
-        //int selectedId = budget.getId();
-        //String name = budget.getName();
-        //int amount = budget.getAmount();
-        //boolean isValid = budget.isValid();
-        //controller.clearBudget(selectedId, name, amount, isValid);
-        listener.onClickMenuItem(id);
+        BankMenu menu = (BankMenu) parent.getItemAtPosition(position);
+        listener.onClickMenuItem(menu);
     }
 
 }

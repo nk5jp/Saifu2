@@ -2,18 +2,13 @@ package jp.nk5.saifu2.service;
 
 import android.content.Context;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import jp.nk5.saifu2.BankActivity;
-import jp.nk5.saifu2.domain.Account;
 import jp.nk5.saifu2.domain.AccountRepository;
 import jp.nk5.saifu2.infra.AccountRepositorySQLite;
 import jp.nk5.saifu2.view.viewmodel.AccountViewModel;
 
 public class OpeningAccountService {
 
-    private static OpeningAccountService instance;
     private BankActivity listener;
     private AccountRepository repository;
     private AccountViewModel viewModel;
