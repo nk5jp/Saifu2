@@ -32,5 +32,4 @@ public class Account {
         return String.format(Locale.JAPAN, "%s:%,d", name, balance);
     }
 
-
 }

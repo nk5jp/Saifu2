@@ -1,6 +1,7 @@
 package jp.nk5.saifu2.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,7 @@ public class AccountListAdapter extends ArrayAdapter<Account> {
         {
             TextView textView = view.findViewById(android.R.id.text1);
             textView.setText(account.toString());
+            if (!account.isOpened()) textView.setBackgroundColor(Color.GRAY);
         }
         return view;
     }

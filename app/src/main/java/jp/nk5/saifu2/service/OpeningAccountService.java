@@ -6,6 +6,7 @@ import jp.nk5.saifu2.BankActivity;
 import jp.nk5.saifu2.domain.AccountRepository;
 import jp.nk5.saifu2.infra.AccountRepositorySQLite;
 import jp.nk5.saifu2.view.viewmodel.AccountViewModel;
+import jp.nk5.saifu2.view.viewmodel.BankMenu;
 
 public class OpeningAccountService {
 
@@ -24,6 +25,10 @@ public class OpeningAccountService {
     {
         try
         {
+            if (isDuplicated(name)) {
+                listener.showError("Name is duplicated.");
+                return;
+            }
             repository.setAccount(name);
             viewModel.setAccounts(repository.getAllAccount());
             listener.updateView();
@@ -41,5 +46,23 @@ public class OpeningAccountService {
         } catch (Exception e) {
             listener.showError(e.getMessage());
         }
+    }
+
+    public void updateAccountStatus(int id)
+    {
+        try {
+            repository.updateAccount(id);
+            viewModel.setAccounts(repository.getAllAccount());
+            listener.updateView();
+        } catch (Exception e) {
+            listener.showError(e.getMessage());
+        }
+    }
+
+    private boolean isDuplicated(String name) throws Exception
+    {
+            return repository.getAllAccount().stream()
+                    .filter(a -> a.getName().equals(name))
+                    .count() != 0;
     }
 }

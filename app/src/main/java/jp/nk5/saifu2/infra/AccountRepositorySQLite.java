@@ -42,13 +42,13 @@ public class AccountRepositorySQLite implements AccountRepository {
     }
 
     @Override
-    public void updateAccount(int id,  boolean isOpened) throws Exception {
+    public void updateAccount(int id) throws Exception {
         Optional<Account> optional = accounts.stream()
                 .filter(a -> a.getId() == id)
                 .findFirst();
         if (optional.isPresent()) {
             Account account = optional.get();
-            account.setOpened(isOpened);
+            account.setOpened(!account.isOpened());
             dao.updateAccount(account);
         } else {
             throw new NoSuchElementException();
