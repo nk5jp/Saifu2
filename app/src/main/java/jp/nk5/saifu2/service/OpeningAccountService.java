@@ -5,19 +5,22 @@ import android.content.Context;
 import jp.nk5.saifu2.BankActivity;
 import jp.nk5.saifu2.domain.AccountRepository;
 import jp.nk5.saifu2.infra.AccountRepositorySQLite;
+import jp.nk5.saifu2.view.AccountFragment;
 import jp.nk5.saifu2.view.viewmodel.AccountViewModel;
 
 public class OpeningAccountService {
 
-    private BankActivity listener;
+    private BankActivity errorListener;
+    private AccountFragment updateViewListener;
     private AccountRepository repository;
     private AccountViewModel viewModel;
 
-    public OpeningAccountService(Context context, BankActivity listener, AccountViewModel viewModel) throws Exception
+    public OpeningAccountService(Context context, AccountFragment updateViewListener, BankActivity errorListener) throws Exception
     {
         this.repository = AccountRepositorySQLite.getInstance(context);
-        this.listener = listener;
-        this.viewModel = viewModel;
+        this.updateViewListener = updateViewListener;
+        this.errorListener = errorListener;
+        this.viewModel = updateViewListener.getViewModel();
     }
 
     public void addAccount(String name)
@@ -25,14 +28,14 @@ public class OpeningAccountService {
         try
         {
             if (isDuplicated(name)) {
-                listener.showError("Name is duplicated.");
+                errorListener.showError("Name is duplicated.");
                 return;
             }
             repository.setAccount(name);
             viewModel.setAccounts(repository.getAllAccount());
-            listener.updateView();
+            updateViewListener.updateView();
         } catch (Exception e) {
-            listener.showError(e.getMessage());
+            errorListener.showError(e.getMessage());
         }
     }
 
@@ -41,9 +44,9 @@ public class OpeningAccountService {
         try
         {
             viewModel.setAccounts(repository.getAllAccount());
-            listener.updateView();
+            updateViewListener.updateView();
         } catch (Exception e) {
-            listener.showError(e.getMessage());
+            errorListener.showError(e.getMessage());
         }
     }
 
@@ -52,9 +55,9 @@ public class OpeningAccountService {
         try {
             repository.updateAccount(id);
             viewModel.setAccounts(repository.getAllAccount());
-            listener.updateView();
+            updateViewListener.updateView();
         } catch (Exception e) {
-            listener.showError(e.getMessage());
+            errorListener.showError(e.getMessage());
         }
     }
 

@@ -15,7 +15,7 @@ import jp.nk5.saifu2.view.viewmodel.TransferViewModel;
 
 public class TransferFragment extends Fragment {
 
-    private TransferViewModel viewModel;
+    private TransferViewModel viewModel = new TransferViewModel(null, null);;
     private View layout;
 
     public static String getTagName()
@@ -26,10 +26,16 @@ public class TransferFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container  , Bundle savedInstanceState)
     {
-
-        viewModel = new TransferViewModel(null, null);
         layout = inflater.inflate(R.layout.fragment_transfer, container, false);
         return layout;
+    }
+
+    @Override
+    public void onAttach(Context context)
+    {
+        super.onAttach(context);
+        viewModel.setAccountOfTo(null);
+        viewModel.setAccountOfFrom(null);
     }
 
     public TransferViewModel getViewModel()

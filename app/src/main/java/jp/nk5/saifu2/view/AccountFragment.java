@@ -18,7 +18,7 @@ import jp.nk5.saifu2.view.viewmodel.AccountViewModel;
 
 public class AccountFragment extends Fragment {
 
-    private AccountViewModel viewModel;
+    private AccountViewModel viewModel = new AccountViewModel(new ArrayList<>());
     private View layout;
 
     public static String getTagName()
@@ -29,7 +29,6 @@ public class AccountFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container  , Bundle savedInstanceState)
     {
-        viewModel = new AccountViewModel(new ArrayList<>());
         layout = inflater.inflate(R.layout.fragment_account, container, false);
         return layout;
     }
