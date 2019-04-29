@@ -1,16 +1,22 @@
 package jp.nk5.saifu2.view;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import jp.nk5.saifu2.R;
+import jp.nk5.saifu2.view.viewmodel.TransferViewModel;
 
 public class TransferFragment extends Fragment {
+
+    private TransferViewModel viewModel;
+    private View layout;
 
     public static String getTagName()
     {
@@ -20,7 +26,30 @@ public class TransferFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container  , Bundle savedInstanceState)
     {
-        return inflater.inflate(R.layout.fragment_transfer, container, false);
+
+        viewModel = new TransferViewModel(null, null);
+        layout = inflater.inflate(R.layout.fragment_transfer, container, false);
+        return layout;
     }
+
+    public TransferViewModel getViewModel()
+    {
+        return this.viewModel;
+    }
+
+    public void updateView()
+    {
+        Context context = this.getContext();
+        if (context != null) {
+            TextView textView = layout.findViewById(R.id.textView1);
+            if (viewModel.getAccountOfTo() == null) textView.setText(android.R.string.unknownName);
+            else textView.setText(viewModel.getAccountOfTo().getName());
+
+            textView = layout.findViewById(R.id.textView2);
+            if (viewModel.getAccountOfFrom() == null) textView.setText(android.R.string.unknownName);
+            else textView.setText(viewModel.getAccountOfFrom().getName());
+        }
+    }
+
 
 }

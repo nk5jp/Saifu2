@@ -17,7 +17,8 @@ import jp.nk5.saifu2.view.OpeningAccountFragment;
 import jp.nk5.saifu2.view.TransferFragment;
 import jp.nk5.saifu2.view.viewmodel.BankMenu;
 
-public class BankActivity extends AppCompatActivity implements BankMenuFragment.EventListener, ListView.OnItemLongClickListener {
+public class BankActivity extends AppCompatActivity
+        implements BankMenuFragment.EventListener, ListView.OnItemLongClickListener, ListView.OnItemClickListener {
 
     private static OpeningAccountService service;
     private AccountFragment accountFragment;
@@ -36,6 +37,7 @@ public class BankActivity extends AppCompatActivity implements BankMenuFragment.
                 .replace(R.id.layout_form, new OpeningAccountFragment(), OpeningAccountFragment.getTagName())
                 .replace(R.id.layout_information, accountFragment, AccountFragment.getTagName())
                 .commit();
+        currentMenu = BankMenu.ACCOUNT;
     }
 
     @Override
@@ -51,7 +53,7 @@ public class BankActivity extends AppCompatActivity implements BankMenuFragment.
                 service.getAllAccount();
                 ListView listView = findViewById(R.id.listView1);
                 listView.setOnItemLongClickListener(this);
-                currentMenu = BankMenu.ACCOUNT;
+                listView.setOnItemClickListener(this);
             }
         } catch (Exception e) {
             super.onDestroy();
@@ -107,6 +109,20 @@ public class BankActivity extends AppCompatActivity implements BankMenuFragment.
         return false;
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long i) {
+        if (currentMenu == BankMenu.TRANSFER)
+        {
+            TransferFragment transferFragment = (TransferFragment) fragmentManager.findFragmentByTag(TransferFragment.getTagName());
+            AccountFragment accountFragment = (AccountFragment) fragmentManager.findFragmentByTag(AccountFragment.getTagName());
+            if (transferFragment != null && accountFragment != null) {
+                if (transferFragment.getViewModel().getAccountOfTo() == null) transferFragment.getViewModel().setAccountOfTo(accountFragment.getViewModel().getAccounts().get(position));
+                else if (transferFragment.getViewModel().getAccountOfFrom() == null) transferFragment.getViewModel().setAccountOfFrom(accountFragment.getViewModel().getAccounts().get(position));
+                transferFragment.updateView();
+            }
+        }
+    }
+
     public void showError (String message)
     {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
@@ -114,11 +130,25 @@ public class BankActivity extends AppCompatActivity implements BankMenuFragment.
 
     public void updateView()
     {
-        AccountFragment fragment = (AccountFragment) fragmentManager.findFragmentByTag(AccountFragment.getTagName());
-        if (fragment != null) {
-            fragment.updateView();
-        } else {
-            showError("failed to find AccountFragment");
+        switch (currentMenu) {
+            case ACCOUNT:
+                AccountFragment accountFragment = (AccountFragment) fragmentManager.findFragmentByTag(AccountFragment.getTagName());
+                if (accountFragment != null) {
+                    accountFragment.updateView();
+                } else {
+                    showError("failed to find AccountFragment");
+                }
+                break;
+            case TRANSFER:
+                TransferFragment transferFragment = (TransferFragment) fragmentManager.findFragmentByTag(TransferFragment.getTagName());
+                if (transferFragment != null) {
+                    //transferFragment.updateView();
+                } else {
+                    showError("failed to find AccountFragment");
+                }
+                break;
+            case TRANSFER_HISTORY:
+                break;
         }
     }
 
