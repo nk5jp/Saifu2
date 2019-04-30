@@ -17,7 +17,16 @@ public class DBHelper extends SQLiteOpenHelper {
             "balance integer not null, " +
             "isOpened integer not null);";
 
+    private static final String CREATE_TRANSFER_TABLE = "create table transfer ( " +
+            "id integer primary key autoincrement, " +
+            "date integer not null, " +
+            "debitId integer not null, " +
+            "debitValue integer not null, " +
+            "creditId integer not null, " +
+            "creditValue integer not null);";
+
     private static final String DROP_ACCOUNT_TABLE = "drop table account;";
+    private static final String DROP_TRANSFER_TABLE = "drop table transfer;";
 
     static DBHelper getInstance(Context context)
     {
@@ -35,12 +44,15 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(CREATE_ACCOUNT_TABLE);
+        sqLiteDatabase.execSQL(CREATE_TRANSFER_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL(DROP_ACCOUNT_TABLE);
+        sqLiteDatabase.execSQL(DROP_TRANSFER_TABLE);
         sqLiteDatabase.execSQL(CREATE_ACCOUNT_TABLE);
+        sqLiteDatabase.execSQL(CREATE_TRANSFER_TABLE);
     }
 
 }

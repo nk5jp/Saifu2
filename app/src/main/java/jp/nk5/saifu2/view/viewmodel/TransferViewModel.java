@@ -9,8 +9,8 @@ import lombok.Setter;
 public class TransferViewModel {
 
     @Getter @Setter
-    private Account AccountOfTo;
+    private Account debit;
     @Getter @Setter
-    private Account AccountOfFrom;
+    private Account credit;
 
 }

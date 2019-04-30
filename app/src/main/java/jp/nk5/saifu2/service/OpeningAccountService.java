@@ -53,7 +53,7 @@ public class OpeningAccountService {
     public void updateAccountStatus(int id)
     {
         try {
-            repository.updateAccount(id);
+            repository.openCloseAccount(id);
             viewModel.setAccounts(repository.getAllAccount());
             updateViewListener.updateView();
         } catch (Exception e) {

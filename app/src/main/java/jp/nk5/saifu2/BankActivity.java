@@ -58,6 +58,7 @@ public class BankActivity extends AppCompatActivity
             );
             transferService = new TransferService(this,
                     transferFragment,
+                    accountFragment,
                     this
             );
             openingAccountService.getAllAccount();
@@ -94,10 +95,21 @@ public class BankActivity extends AppCompatActivity
     public void onClickAddButton(View view)
     {
         try {
-            String name = getStringFromTextView(R.id.editText1);
+            String name = getStringFromEditText(R.id.editText1);
             openingAccountService.addAccount(name);
         } catch (Exception e) {
             showError("enter NAME");
+        }
+    }
+
+    public void onClickTransferButton(View view)
+    {
+        try {
+            int value = getIntFromEditText(R.id.editText1, 0);
+            if (value == 0) return;
+            transferService.transferMoney(value);
+        } catch (Exception e) {
+            showError("enter price");
         }
     }
 
@@ -126,11 +138,24 @@ public class BankActivity extends AppCompatActivity
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
-    private String getStringFromTextView (int id) throws Exception
+    private String getStringFromEditText (int id) throws Exception
     {
         EditText view = findViewById(id);
         String text = view.getText().toString();
         if (text.equals("")) throw new Exception();
         return text;
     }
+
+    private int getIntFromEditText (int id, int defaultValue) throws Exception
+    {
+        int value;
+        try {
+            EditText view = findViewById(id);
+            value = Integer.parseInt(view.getText().toString());
+        } catch (Exception e) {
+            value = defaultValue;
+        }
+        return value;
+    }
+
 }

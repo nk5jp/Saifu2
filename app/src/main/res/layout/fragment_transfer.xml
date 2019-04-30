@@ -16,7 +16,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@android:string/unknownName"
-            android:labelFor="@id/editText"/>
+            android:labelFor="@id/editText1"/>
 
         <ImageView
             android:id="@+id/imageView"
@@ -35,16 +35,18 @@
     </LinearLayout>
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/editText1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="number" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/button1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/str_transfer" />
+        android:onClick="onClickTransferButton"
+        android:text="@string/str_transfer"
+        tools:ignore="OnClick"/>
 
 </LinearLayout>

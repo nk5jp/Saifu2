@@ -8,20 +8,25 @@ import jp.nk5.saifu2.domain.AccountRepository;
 import jp.nk5.saifu2.infra.AccountRepositorySQLite;
 import jp.nk5.saifu2.view.AccountFragment;
 import jp.nk5.saifu2.view.TransferFragment;
+import jp.nk5.saifu2.view.viewmodel.AccountViewModel;
 import jp.nk5.saifu2.view.viewmodel.TransferViewModel;
 
 public class TransferService {
 
     private BankActivity errorListener;
     private TransferFragment updateFormViewListener;
+    private AccountFragment updateInfoViewListener;
     private TransferViewModel formViewModel;
+    private AccountViewModel infoViewModel;
     private AccountRepository accountRepository;
 
-    public TransferService(Context context, TransferFragment updateFormViewListener, BankActivity errorListener) throws Exception
+    public TransferService(Context context, TransferFragment updateFormViewListener, AccountFragment updateInfoViewListener, BankActivity errorListener) throws Exception
     {
         accountRepository = AccountRepositorySQLite.getInstance(context);
         this.updateFormViewListener = updateFormViewListener;
+        this.updateInfoViewListener = updateInfoViewListener;
         this.formViewModel = updateFormViewListener.getViewModel();
+        this.infoViewModel = updateInfoViewListener.getViewModel();
         this.errorListener = errorListener;
     }
 
@@ -31,8 +36,8 @@ public class TransferService {
             Account targetAccount = accountRepository.getAccount(id);
             if (!targetAccount.isOpened()) return;
 
-            if (formViewModel.getAccountOfTo() == null) formViewModel.setAccountOfTo(targetAccount);
-            else if (formViewModel.getAccountOfFrom() == null) formViewModel.setAccountOfFrom(targetAccount);
+            if (formViewModel.getDebit() == null) formViewModel.setDebit(targetAccount);
+            else if (formViewModel.getCredit() == null) formViewModel.setCredit(targetAccount);
 
             updateFormViewListener.updateView();
         } catch (Exception e) {
@@ -40,5 +45,27 @@ public class TransferService {
         }
     }
 
+    public void transferMoney(int value)
+    {
+        try {
+            if (formViewModel.getDebit() != null) {
+                int debitId = formViewModel.getDebit().getId();
+                accountRepository.depositMoney(debitId, value);
+            }
+
+            if (formViewModel.getCredit() != null) {
+                int creditId = formViewModel.getCredit().getId();
+                accountRepository.depositMoney(creditId, -value);
+            }
+
+            formViewModel.setCredit(null);
+            formViewModel.setDebit(null);
+            infoViewModel.setAccounts(accountRepository.getAllAccount());
+            updateFormViewListener.updateView();
+            updateInfoViewListener.updateView();
+        } catch (Exception e) {
+            errorListener.showError(e.getMessage());
+        }
+    }
 
 }

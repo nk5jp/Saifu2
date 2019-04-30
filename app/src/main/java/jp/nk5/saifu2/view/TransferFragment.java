@@ -15,7 +15,7 @@ import jp.nk5.saifu2.view.viewmodel.TransferViewModel;
 
 public class TransferFragment extends Fragment {
 
-    private TransferViewModel viewModel = new TransferViewModel(null, null);;
+    private TransferViewModel viewModel = new TransferViewModel(null, null);
     private View layout;
 
     public static String getTagName()
@@ -34,8 +34,8 @@ public class TransferFragment extends Fragment {
     public void onAttach(Context context)
     {
         super.onAttach(context);
-        viewModel.setAccountOfTo(null);
-        viewModel.setAccountOfFrom(null);
+        viewModel.setDebit(null);
+        viewModel.setCredit(null);
     }
 
     public TransferViewModel getViewModel()
@@ -48,12 +48,12 @@ public class TransferFragment extends Fragment {
         Context context = this.getContext();
         if (context != null) {
             TextView textView = layout.findViewById(R.id.textView1);
-            if (viewModel.getAccountOfTo() == null) textView.setText(android.R.string.unknownName);
-            else textView.setText(viewModel.getAccountOfTo().getName());
+            if (viewModel.getDebit() == null) textView.setText(android.R.string.unknownName);
+            else textView.setText(viewModel.getDebit().getName());
 
             textView = layout.findViewById(R.id.textView2);
-            if (viewModel.getAccountOfFrom() == null) textView.setText(android.R.string.unknownName);
-            else textView.setText(viewModel.getAccountOfFrom().getName());
+            if (viewModel.getCredit() == null) textView.setText(android.R.string.unknownName);
+            else textView.setText(viewModel.getCredit().getName());
         }
     }
 
