@@ -37,6 +37,7 @@ public class AccountListAdapter extends ArrayAdapter<Account> {
             TextView textView = view.findViewById(android.R.id.text1);
             textView.setText(account.toString());
             if (!account.isOpened()) textView.setBackgroundColor(Color.GRAY);
+            if (account.getBalance() < 0) textView.setTextColor(Color.RED);
         }
         return view;
     }

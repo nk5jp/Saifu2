@@ -11,20 +11,25 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import jp.nk5.saifu2.service.OpeningAccountService;
+import jp.nk5.saifu2.service.SearchingTransferService;
 import jp.nk5.saifu2.service.TransferService;
 import jp.nk5.saifu2.view.AccountFragment;
 import jp.nk5.saifu2.view.BankMenuFragment;
 import jp.nk5.saifu2.view.OpeningAccountFragment;
+import jp.nk5.saifu2.view.SearchingTransferFragment;
 import jp.nk5.saifu2.view.TransferFragment;
+import jp.nk5.saifu2.view.TransferHistoryFragment;
 import jp.nk5.saifu2.view.viewmodel.BankMenu;
 
 public class BankActivity extends AppCompatActivity
-        implements BankMenuFragment.EventListener, ListView.OnItemLongClickListener, ListView.OnItemClickListener {
+        implements BankMenuFragment.EventListener, AccountFragment.EventListener {
 
     private OpeningAccountService openingAccountService;
     private TransferService transferService;
+    private SearchingTransferService searchingTransferService;
     private AccountFragment accountFragment;
     private TransferFragment transferFragment;
+    private TransferHistoryFragment transferHistoryFragment;
     private FragmentManager fragmentManager;
     private BankMenu currentMenu;
 
@@ -36,6 +41,8 @@ public class BankActivity extends AppCompatActivity
         fragmentManager = getSupportFragmentManager();
         accountFragment = new AccountFragment();
         transferFragment = new TransferFragment();
+        transferHistoryFragment = new TransferHistoryFragment();
+
         fragmentManager.beginTransaction()
                 .replace(R.id.layout_menu, new BankMenuFragment(), BankMenuFragment.getTagName())
                 .replace(R.id.layout_form, new OpeningAccountFragment(), OpeningAccountFragment.getTagName())
@@ -47,9 +54,6 @@ public class BankActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        ListView listView = findViewById(R.id.listView1);
-        listView.setOnItemLongClickListener(this);
-        listView.setOnItemClickListener(this);
 
         try {
             openingAccountService = new OpeningAccountService(this,
@@ -61,7 +65,13 @@ public class BankActivity extends AppCompatActivity
                     accountFragment,
                     this
             );
+            searchingTransferService = new SearchingTransferService(this,
+                    transferHistoryFragment,
+                    this
+            );
             openingAccountService.getAllAccount();
+            searchingTransferService.getAllTransfer();
+
         } catch (Exception e) {
             super.onDestroy();
         }
@@ -88,6 +98,11 @@ public class BankActivity extends AppCompatActivity
                 currentMenu = BankMenu.TRANSFER;
                 break;
             case TRANSFER_HISTORY:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.layout_form, new SearchingTransferFragment(), TransferFragment.getTagName())
+                        .replace(R.id.layout_information, transferHistoryFragment, AccountFragment.getTagName())
+                        .commit();
+                currentMenu = BankMenu.TRANSFER;
                 break;
         }
     }
@@ -113,8 +128,13 @@ public class BankActivity extends AppCompatActivity
         }
     }
 
+    public void onClickResetButton(View view)
+    {
+        transferService.resetTransferAccount();
+    }
+
     @Override
-    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long i) {
+    public boolean onItemLongClick(int position) {
         if (currentMenu == BankMenu.ACCOUNT)
         {
             int id = accountFragment.getViewModel().getAccounts().get(position).getId();
@@ -125,7 +145,7 @@ public class BankActivity extends AppCompatActivity
     }
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long i) {
+    public void onItemClick(int position) {
         if (currentMenu == BankMenu.TRANSFER)
         {
             int id = accountFragment.getViewModel().getAccounts().get(position).getId();

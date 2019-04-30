@@ -45,17 +45,25 @@ public class TransferService {
         }
     }
 
+    public void resetTransferAccount()
+    {
+        formViewModel.setCredit(null);
+        formViewModel.setDebit(null);
+        updateFormViewListener.updateView();
+    }
+
     public void transferMoney(int value)
     {
         try {
-            if (formViewModel.getDebit() != null) {
+            if (formViewModel.getDebit() != null && formViewModel.getCredit() == null) {
                 int debitId = formViewModel.getDebit().getId();
                 accountRepository.depositMoney(debitId, value);
             }
 
-            if (formViewModel.getCredit() != null) {
+            if (formViewModel.getDebit() != null && formViewModel.getCredit() != null) {
+                int debitId = formViewModel.getDebit().getId();
                 int creditId = formViewModel.getCredit().getId();
-                accountRepository.depositMoney(creditId, -value);
+                accountRepository.transferMoney(debitId, creditId, value);
             }
 
             formViewModel.setCredit(null);

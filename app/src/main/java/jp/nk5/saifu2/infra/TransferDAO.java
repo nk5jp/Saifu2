@@ -35,28 +35,26 @@ class TransferDAO extends DAO<Transfer> {
         int id = cursor.getInt(cursor.getColumnIndex("id"));
         int date = cursor.getInt(cursor.getColumnIndex("date"));
         int debitId = cursor.getInt(cursor.getColumnIndex("debitId"));
-        int debitValue = cursor.getInt(cursor.getColumnIndex("debitValue"));
         int creditId = cursor.getInt(cursor.getColumnIndex("creditId"));
+        int value = cursor.getInt(cursor.getColumnIndex("value"));
         if (creditId == SpecificId.MeansNull.getId())
         {
             return new Transfer.Builder(id,
                     MyDate.getYear(date),
-                    MyDate.getYear(date),
+                    MyDate.getMonth(date),
                     MyDate.getDay(date),
                     repository.getAccount(debitId),
-                    debitValue
+                    value
             ).build();
         } else {
-            int creditValue = cursor.getInt(cursor.getColumnIndex("creditValue"));
             return new Transfer.Builder(id,
                     MyDate.getYear(date),
-                    MyDate.getYear(date),
+                    MyDate.getMonth(date),
                     MyDate.getDay(date),
                     repository.getAccount(debitId),
-                    debitValue
+                    value
             ).credit(
-                    repository.getAccount(creditId),
-                    creditValue
+                    repository.getAccount(creditId)
             ).build();
         }
     }
@@ -66,16 +64,14 @@ class TransferDAO extends DAO<Transfer> {
         ContentValues values = new ContentValues();
         values.put("date", MyDate.generateDate(entity.getYear(), entity.getMonth(), entity.getDay()));
         values.put("debitId", entity.getDebit().getId());
-        values.put("debitValue", entity.getDebitValue());
+        values.put("value", entity.getValue());
         switch(entity.getTransferType())
         {
             case Deposit:
                 values.put("creditId", SpecificId.MeansNull.getId());
-                values.put("creditValue", 0);
                 break;
             case Transfer:
                 values.put("creditId", entity.getCredit().getId());
-                values.put("creditValue", entity.getCreditValue());
                 break;
         }
         return values;

@@ -18,9 +18,7 @@ public class Transfer {
     @Getter
     private Account credit;
     @Getter
-    private int debitValue;
-    @Getter
-    private int creditValue;
+    private int value;
     @Getter
     private TransferType transferType;
 
@@ -31,23 +29,21 @@ public class Transfer {
         private int day;
         private Account debit;
         private Account credit = null;
-        private int debitValue;
-        private int creditValue = 0;
+        private int value;
 
-        public Builder (int id, int year, int month, int day, Account debit, int debitValue)
+        public Builder (int id, int year, int month, int day, Account debit, int value)
         {
             this.id = id;
             this.year = year;
             this.month = month;
             this.day = day;
             this.debit = debit;
-            this.debitValue = debitValue;
+            this.value = value;
         }
 
-        public Builder credit(Account credit, int creditValue)
+        public Builder credit(Account credit)
         {
             this.credit = credit;
-            this.creditValue = creditValue;
             return this;
         }
 
@@ -63,8 +59,7 @@ public class Transfer {
         this.day = builder.day;
         this.debit = builder.debit;
         this.credit = builder.credit;
-        this.debitValue = builder.debitValue;
-        this.creditValue = builder.creditValue;
+        this.value = builder.value;
         if (credit == null) this.transferType = TransferType.Deposit;
         else this.transferType = TransferType.Transfer;
     }

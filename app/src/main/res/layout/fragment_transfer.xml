@@ -49,4 +49,12 @@
         android:text="@string/str_transfer"
         tools:ignore="OnClick"/>
 
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClickResetButton"
+        android:text="@string/str_reset"
+        tools:ignore="OnClick" />
+
 </LinearLayout>

@@ -48,42 +48,55 @@ public class AccountRepositorySQLite implements AccountRepository {
 
     @Override
     public void openCloseAccount(int id) throws Exception {
-        Optional<Account> optional = accounts.stream()
-                .filter(a -> a.getId() == id)
-                .findFirst();
-        if (optional.isPresent()) {
-            Account account = optional.get();
-            account.setOpened(!account.isOpened());
-            accountDao.updateAccount(account);
-        } else {
-            throw new NoSuchElementException();
-        }
+        Account account = getAccount(id);
+        account.setOpened(!account.isOpened());
+        accountDao.updateAccount(account);
     }
 
-    public void depositMoney(int id, int price) throws Exception {
-        Optional<Account> optional = accounts.stream()
-                .filter(a -> a.getId() == id)
-                .findFirst();
-        if (optional.isPresent()) {
-            Account account = optional.get();
-            account.setBalance(account.getBalance() + price);
-            accountDao.updateAccount(account);
+    public void depositMoney(int id, int value) throws Exception {
 
-            Calendar calendar = Calendar.getInstance();
+        Account account = getAccount(id);
+        account.setBalance(account.getBalance() + value);
+        accountDao.updateAccount(account);
 
-            Transfer transfer = new Transfer.Builder(
-                    SpecificId.NotPersisted.getId(),
-                    calendar.get(Calendar.YEAR),
-                    calendar.get(Calendar.MONTH) + 1,
-                    calendar.get(Calendar.DATE),
-                    account,
-                    account.getBalance()
-            ).build();
-            transferDAO.createTransfer(transfer);
-            transfers.add(transfer);
-        } else {
-            throw new NoSuchElementException();
-        }
+        Calendar calendar = Calendar.getInstance();
+
+        Transfer transfer = new Transfer.Builder(
+                SpecificId.NotPersisted.getId(),
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH) + 1,
+                calendar.get(Calendar.DATE),
+                account,
+                value
+        ).build();
+        transferDAO.createTransfer(transfer);
+        transfers.add(transfer);
+    }
+
+    public void transferMoney(int debitId, int creditId, int value) throws Exception {
+
+        Account debit = getAccount(debitId);
+        Account credit = getAccount(creditId);
+        debit.setBalance(debit.getBalance() + value);
+        credit.setBalance(credit.getBalance() - value);
+        accountDao.updateAccount(debit);
+        accountDao.updateAccount(credit);
+
+        Calendar calendar = Calendar.getInstance();
+
+        Transfer transfer = new Transfer.Builder(
+                SpecificId.NotPersisted.getId(),
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH) + 1,
+                calendar.get(Calendar.DATE),
+                debit,
+                value
+        ).credit(
+                credit
+        )
+        .build();
+        transferDAO.createTransfer(transfer);
+        transfers.add(transfer);
     }
 
     @Override
@@ -105,6 +118,9 @@ public class AccountRepositorySQLite implements AccountRepository {
     {
         return accounts;
     }
+
+    @Override
+    public List<Transfer> getAllTransfer() { return transfers; }
 
     @Override
     public List<Account> getAllValidAccount()

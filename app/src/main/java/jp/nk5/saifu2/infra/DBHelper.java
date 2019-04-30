@@ -21,9 +21,8 @@ public class DBHelper extends SQLiteOpenHelper {
             "id integer primary key autoincrement, " +
             "date integer not null, " +
             "debitId integer not null, " +
-            "debitValue integer not null, " +
             "creditId integer not null, " +
-            "creditValue integer not null);";
+            "value integer not null);";
 
     private static final String DROP_ACCOUNT_TABLE = "drop table account;";
     private static final String DROP_TRANSFER_TABLE = "drop table transfer;";

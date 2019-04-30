@@ -7,4 +7,6 @@
     <string name="str_account_name">ACCOUNT_NAME</string>
     <string name="str_transfer">TRANSFER</string>
     <string name="str_image">IMAGE</string>
+    <string name="str_reset">RESET</string>
+    <string name="str_search">SEARCH</string>
 </resources>
