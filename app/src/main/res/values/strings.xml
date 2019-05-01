@@ -9,4 +9,5 @@
     <string name="str_image">IMAGE</string>
     <string name="str_reset">RESET</string>
     <string name="str_search">SEARCH</string>
+    <string name="str_yyyymm">YYYYMM</string>
 </resources>
