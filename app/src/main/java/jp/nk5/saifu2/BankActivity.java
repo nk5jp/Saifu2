@@ -5,9 +5,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import jp.nk5.saifu2.service.OpeningAccountService;
@@ -120,8 +118,7 @@ public class BankActivity extends AppCompatActivity
     public void onClickTransferButton(View view)
     {
         try {
-            int value = getIntFromEditText(R.id.editText1, 0);
-            if (value == 0) return;
+            int value = getIntFromEditText(R.id.editText1);
             transferService.transferMoney(value);
         } catch (Exception e) {
             showError("enter price");
@@ -131,6 +128,16 @@ public class BankActivity extends AppCompatActivity
     public void onClickResetButton(View view)
     {
         transferService.resetTransferAccount();
+    }
+
+    public void onClickSearchButton(View view)
+    {
+        try {
+            int date = getIntFromEditText(R.id.editText1);
+            searchingTransferService.getSpecificTransfer(date);
+        } catch (Exception e) {
+            showError("enter integer with YYYYMM format");
+        }
     }
 
     @Override
@@ -166,16 +173,10 @@ public class BankActivity extends AppCompatActivity
         return text;
     }
 
-    private int getIntFromEditText (int id, int defaultValue) throws Exception
+    private int getIntFromEditText (int id) throws Exception
     {
-        int value;
-        try {
             EditText view = findViewById(id);
-            value = Integer.parseInt(view.getText().toString());
-        } catch (Exception e) {
-            value = defaultValue;
-        }
-        return value;
+            return Integer.parseInt(view.getText().toString());
     }
 
 }

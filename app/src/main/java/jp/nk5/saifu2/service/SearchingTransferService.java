@@ -33,4 +33,26 @@ public class SearchingTransferService {
         }
     }
 
+    public void getSpecificTransfer(int date)
+    {
+        try {
+            if (!isValid(date)) {
+                errorListener.showError("this is obviously invalid date");
+                return;
+            }
+
+            int year = date / 100;
+            int month = date - year * 100;
+            viewModel.setTransfers(repository.getSpecificTransfer(year, month));
+            updateViewListener.updateView();
+        } catch (Exception e) {
+            errorListener.showError(e.getMessage());
+        }
+    }
+
+    private boolean isValid(int date)
+    {
+        return String.valueOf(date).length() == 6;
+    }
+
 }

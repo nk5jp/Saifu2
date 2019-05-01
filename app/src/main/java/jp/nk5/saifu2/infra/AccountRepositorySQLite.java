@@ -123,6 +123,14 @@ public class AccountRepositorySQLite implements AccountRepository {
     public List<Transfer> getAllTransfer() { return transfers; }
 
     @Override
+    public List<Transfer> getSpecificTransfer(int year, int month)
+    {
+        return transfers.stream()
+                .filter(t -> t.getYear() == year && t.getMonth() == month)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<Account> getAllValidAccount()
     {
         return accounts.stream()
