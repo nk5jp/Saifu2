@@ -16,8 +16,6 @@ public class TransferService {
     private BankActivity errorListener;
     private TransferFragment updateFormViewListener;
     private AccountFragment updateInfoViewListener;
-    private TransferViewModel formViewModel;
-    private AccountViewModel infoViewModel;
     private AccountRepository accountRepository;
 
     public TransferService(Context context, TransferFragment updateFormViewListener, AccountFragment updateInfoViewListener, BankActivity errorListener) throws Exception
@@ -25,8 +23,6 @@ public class TransferService {
         accountRepository = AccountRepositorySQLite.getInstance(context);
         this.updateFormViewListener = updateFormViewListener;
         this.updateInfoViewListener = updateInfoViewListener;
-        this.formViewModel = updateFormViewListener.getViewModel();
-        this.infoViewModel = updateInfoViewListener.getViewModel();
         this.errorListener = errorListener;
     }
 
@@ -36,8 +32,10 @@ public class TransferService {
             Account targetAccount = accountRepository.getAccount(id);
             if (!targetAccount.isOpened()) return;
 
-            if (formViewModel.getDebit() == null) formViewModel.setDebit(targetAccount);
-            else if (formViewModel.getCredit() == null) formViewModel.setCredit(targetAccount);
+            TransferViewModel viewModel = updateFormViewListener.getViewModel();
+
+            if (viewModel.getDebit() == null) viewModel.setDebit(targetAccount);
+            else if (viewModel.getCredit() == null) viewModel.setCredit(targetAccount);
 
             updateFormViewListener.updateView();
         } catch (Exception e) {
@@ -47,20 +45,24 @@ public class TransferService {
 
     public void resetTransferAccount()
     {
-        formViewModel.setCredit(null);
-        formViewModel.setDebit(null);
+        TransferViewModel viewModel = updateFormViewListener.getViewModel();
+
+        viewModel.setCredit(null);
+        viewModel.setDebit(null);
         updateFormViewListener.updateView();
     }
 
     public void transferMoney(int value)
     {
         try {
-            if (formViewModel.getDebit() != null && formViewModel.getCredit() == null) {
+            TransferViewModel formViewModel = updateFormViewListener.getViewModel();
+
+            if (isDepositCase(formViewModel)) {
                 int debitId = formViewModel.getDebit().getId();
                 accountRepository.depositMoney(debitId, value);
             }
 
-            if (formViewModel.getDebit() != null && formViewModel.getCredit() != null) {
+            if (isTransferCase(formViewModel)) {
                 int debitId = formViewModel.getDebit().getId();
                 int creditId = formViewModel.getCredit().getId();
                 accountRepository.transferMoney(debitId, creditId, value);
@@ -68,12 +70,25 @@ public class TransferService {
 
             formViewModel.setCredit(null);
             formViewModel.setDebit(null);
+
+            AccountViewModel infoViewModel = updateInfoViewListener.getViewModel();
             infoViewModel.setAccounts(accountRepository.getAllAccount());
+
             updateFormViewListener.updateView();
             updateInfoViewListener.updateView();
         } catch (Exception e) {
             errorListener.showError(e.getMessage());
         }
+    }
+
+    private boolean isDepositCase(TransferViewModel viewModel)
+    {
+        return viewModel.getDebit() != null && viewModel.getCredit() == null;
+    }
+
+    private boolean isTransferCase(TransferViewModel viewModel)
+    {
+        return viewModel.getDebit() != null && viewModel.getCredit() != null;
     }
 
 }

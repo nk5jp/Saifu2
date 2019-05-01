@@ -13,14 +13,12 @@ public class OpeningAccountService {
     private BankActivity errorListener;
     private AccountFragment updateViewListener;
     private AccountRepository repository;
-    private AccountViewModel viewModel;
 
     public OpeningAccountService(Context context, AccountFragment updateViewListener, BankActivity errorListener) throws Exception
     {
         this.repository = AccountRepositorySQLite.getInstance(context);
         this.updateViewListener = updateViewListener;
         this.errorListener = errorListener;
-        this.viewModel = updateViewListener.getViewModel();
     }
 
     public void addAccount(String name)
@@ -32,7 +30,7 @@ public class OpeningAccountService {
                 return;
             }
             repository.setAccount(name);
-            viewModel.setAccounts(repository.getAllAccount());
+            updateViewListener.getViewModel().setAccounts(repository.getAllAccount());
             updateViewListener.updateView();
         } catch (Exception e) {
             errorListener.showError(e.getMessage());
@@ -43,8 +41,7 @@ public class OpeningAccountService {
     {
         try
         {
-            viewModel.setAccounts(repository.getAllAccount());
-            updateViewListener.updateView();
+            updateViewListener.getViewModel().setAccounts(repository.getAllAccount());
         } catch (Exception e) {
             errorListener.showError(e.getMessage());
         }
@@ -54,7 +51,7 @@ public class OpeningAccountService {
     {
         try {
             repository.openCloseAccount(id);
-            viewModel.setAccounts(repository.getAllAccount());
+            updateViewListener.getViewModel().setAccounts(repository.getAllAccount());
             updateViewListener.updateView();
         } catch (Exception e) {
             errorListener.showError(e.getMessage());

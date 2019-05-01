@@ -41,12 +41,6 @@ public class BankActivity extends AppCompatActivity
         transferFragment = new TransferFragment();
         transferHistoryFragment = new TransferHistoryFragment();
 
-        fragmentManager.beginTransaction()
-                .replace(R.id.layout_menu, new BankMenuFragment(), BankMenuFragment.getTagName())
-                .replace(R.id.layout_form, new OpeningAccountFragment(), OpeningAccountFragment.getTagName())
-                .replace(R.id.layout_information, accountFragment, AccountFragment.getTagName())
-                .commit();
-        currentMenu = BankMenu.ACCOUNT;
     }
 
     @Override
@@ -68,7 +62,13 @@ public class BankActivity extends AppCompatActivity
                     this
             );
             openingAccountService.getAllAccount();
-            searchingTransferService.getAllTransfer();
+
+            fragmentManager.beginTransaction()
+                    .replace(R.id.layout_menu, new BankMenuFragment(), BankMenuFragment.getTagName())
+                    .replace(R.id.layout_form, new OpeningAccountFragment(), OpeningAccountFragment.getTagName())
+                    .replace(R.id.layout_information, accountFragment, AccountFragment.getTagName())
+                    .commit();
+            currentMenu = BankMenu.ACCOUNT;
 
         } catch (Exception e) {
             super.onDestroy();
@@ -82,6 +82,7 @@ public class BankActivity extends AppCompatActivity
         switch (menu)
         {
             case ACCOUNT:
+                openingAccountService.getAllAccount();
                 fragmentManager.beginTransaction()
                         .replace(R.id.layout_form, new OpeningAccountFragment(), OpeningAccountFragment.getTagName())
                         .replace(R.id.layout_information, accountFragment, AccountFragment.getTagName())
@@ -89,6 +90,7 @@ public class BankActivity extends AppCompatActivity
                 currentMenu = BankMenu.ACCOUNT;
                 break;
             case TRANSFER:
+                openingAccountService.getAllAccount();
                 fragmentManager.beginTransaction()
                         .replace(R.id.layout_form, transferFragment, TransferFragment.getTagName())
                         .replace(R.id.layout_information, accountFragment, AccountFragment.getTagName())
@@ -96,9 +98,10 @@ public class BankActivity extends AppCompatActivity
                 currentMenu = BankMenu.TRANSFER;
                 break;
             case TRANSFER_HISTORY:
+                searchingTransferService.getAllTransfer();
                 fragmentManager.beginTransaction()
-                        .replace(R.id.layout_form, new SearchingTransferFragment(), TransferFragment.getTagName())
-                        .replace(R.id.layout_information, transferHistoryFragment, AccountFragment.getTagName())
+                        .replace(R.id.layout_form, new SearchingTransferFragment(), SearchingTransferFragment.getTagName())
+                        .replace(R.id.layout_information, transferHistoryFragment, TransferHistoryFragment.getTagName())
                         .commit();
                 currentMenu = BankMenu.TRANSFER;
                 break;
