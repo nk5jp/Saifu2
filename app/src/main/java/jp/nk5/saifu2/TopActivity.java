@@ -4,13 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 
 import jp.nk5.saifu2.view.TopFragment;
 import jp.nk5.saifu2.view.TopMenuFragment;
 import jp.nk5.saifu2.view.viewmodel.TopMenu;
 
-public class TopActivity extends AppCompatActivity implements TopMenuFragment.EventListener {
+public class TopActivity extends BaseActivity implements TopMenuFragment.EventListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
