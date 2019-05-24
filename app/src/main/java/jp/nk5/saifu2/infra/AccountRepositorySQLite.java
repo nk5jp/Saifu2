@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import jp.nk5.saifu2.domain.AccountRepository;
+import jp.nk5.saifu2.domain.MyDate;
 import jp.nk5.saifu2.domain.SpecificId;
 import jp.nk5.saifu2.domain.Account;
 import jp.nk5.saifu2.domain.Transfer;
@@ -60,12 +61,15 @@ public class AccountRepositorySQLite implements AccountRepository {
         accountDao.updateAccount(account);
 
         Calendar calendar = Calendar.getInstance();
+        MyDate today = new MyDate(
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH) + 1,
+                calendar.get(Calendar.DATE)
+        );
 
         Transfer transfer = new Transfer.Builder(
                 SpecificId.NotPersisted.getId(),
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH) + 1,
-                calendar.get(Calendar.DATE),
+                today,
                 account,
                 value
         ).build();
@@ -83,12 +87,15 @@ public class AccountRepositorySQLite implements AccountRepository {
         accountDao.updateAccount(credit);
 
         Calendar calendar = Calendar.getInstance();
+        MyDate today = new MyDate(
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH) + 1,
+                calendar.get(Calendar.DATE)
+        );
 
         Transfer transfer = new Transfer.Builder(
                 SpecificId.NotPersisted.getId(),
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH) + 1,
-                calendar.get(Calendar.DATE),
+                today,
                 debit,
                 value
         ).credit(
@@ -126,7 +133,7 @@ public class AccountRepositorySQLite implements AccountRepository {
     public List<Transfer> getSpecificTransfer(int year, int month)
     {
         return transfers.stream()
-                .filter(t -> t.getYear() == year && t.getMonth() == month)
+                .filter(t -> t.getMyDate().getYear() == year && t.getMyDate().getMonth() == month)
                 .collect(Collectors.toList());
     }
 

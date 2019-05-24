@@ -33,24 +33,22 @@ class TransferDAO extends DAO<Transfer> {
     @Override
     Transfer transformCursorToEntity(Cursor cursor) throws Exception {
         int id = cursor.getInt(cursor.getColumnIndex("id"));
-        int date = cursor.getInt(cursor.getColumnIndex("date"));
+        MyDate myDate = new MyDate(
+                cursor.getInt(cursor.getColumnIndex("date"))
+        );
         int debitId = cursor.getInt(cursor.getColumnIndex("debitId"));
         int creditId = cursor.getInt(cursor.getColumnIndex("creditId"));
         int value = cursor.getInt(cursor.getColumnIndex("value"));
         if (creditId == SpecificId.MeansNull.getId())
         {
             return new Transfer.Builder(id,
-                    MyDate.getYear(date),
-                    MyDate.getMonth(date),
-                    MyDate.getDay(date),
+                    myDate,
                     repository.getAccount(debitId),
                     value
             ).build();
         } else {
             return new Transfer.Builder(id,
-                    MyDate.getYear(date),
-                    MyDate.getMonth(date),
-                    MyDate.getDay(date),
+                    myDate,
                     repository.getAccount(debitId),
                     value
             ).credit(
@@ -62,7 +60,7 @@ class TransferDAO extends DAO<Transfer> {
     @Override
     ContentValues transformEntityToValues(Transfer entity) throws Exception {
         ContentValues values = new ContentValues();
-        values.put("date", MyDate.generateDate(entity.getYear(), entity.getMonth(), entity.getDay()));
+        values.put("date", entity.getMyDate().getFullDate());
         values.put("debitId", entity.getDebit().getId());
         values.put("value", entity.getValue());
         switch(entity.getTransferType())

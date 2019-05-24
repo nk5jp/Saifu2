@@ -37,10 +37,8 @@ public class TransferListAdapter extends ArrayAdapter<Transfer> {
                     textView.setText(
                             String.format(
                                     Locale.JAPAN,
-                                    "%04d/%02d/%02d:%sに%,d円を振込",
-                                    transfer.getYear(),
-                                    transfer.getMonth(),
-                                    transfer.getDay(),
+                                    "%s:%sに%,d円を振込",
+                                    transfer.getMyDate().getFullDateWithFormat(),
                                     transfer.getDebit().getName(),
                                     transfer.getValue()
                             )
@@ -50,10 +48,8 @@ public class TransferListAdapter extends ArrayAdapter<Transfer> {
                     textView.setText(
                             String.format(
                                     Locale.JAPAN,
-                                    "%04d/%02d/%02d:%sから%sに%,d円を振替",
-                                    transfer.getYear(),
-                                    transfer.getMonth(),
-                                    transfer.getDay(),
+                                    "%s:%sから%sに%,d円を振替",
+                                    transfer.getMyDate().getFullDateWithFormat(),
                                     transfer.getCredit().getName(),
                                     transfer.getDebit().getName(),
                                     transfer.getValue()
