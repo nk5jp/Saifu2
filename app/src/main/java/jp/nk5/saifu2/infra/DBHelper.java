@@ -24,8 +24,26 @@ public class DBHelper extends SQLiteOpenHelper {
             "creditId integer not null, " +
             "value integer not null);";
 
+    private static final String CREATE_TEMPLATE_TABLE = "create table template ( " +
+            "id integer primary key autoincrement, " +
+            "name text not null, " +
+            "isControlled integer not null, " +
+            "isValid integer not null);";
+
+    private static final String CREATE_COST_TABLE = "create table cost ( " +
+            "id integer primary key autoincrement, " +
+            "name text not null, " +
+            "estimate integer not null, " +
+            "result integer not null, " +
+            "date integer not null, " +
+            "templateId integer not null, " +
+            "isValid integer not null);";
+
+
     private static final String DROP_ACCOUNT_TABLE = "drop table account;";
     private static final String DROP_TRANSFER_TABLE = "drop table transfer;";
+    private static final String DROP_TEMPLATE_TABLE = "drop table template;";
+    private static final String DROP_COST_TABLE = "drop table cost;";
 
     static DBHelper getInstance(Context context)
     {
@@ -44,14 +62,20 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(CREATE_ACCOUNT_TABLE);
         sqLiteDatabase.execSQL(CREATE_TRANSFER_TABLE);
+        sqLiteDatabase.execSQL(CREATE_TEMPLATE_TABLE);
+        sqLiteDatabase.execSQL(CREATE_COST_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL(DROP_ACCOUNT_TABLE);
         sqLiteDatabase.execSQL(DROP_TRANSFER_TABLE);
+        sqLiteDatabase.execSQL(DROP_TEMPLATE_TABLE);
+        sqLiteDatabase.execSQL(DROP_COST_TABLE);
         sqLiteDatabase.execSQL(CREATE_ACCOUNT_TABLE);
         sqLiteDatabase.execSQL(CREATE_TRANSFER_TABLE);
+        sqLiteDatabase.execSQL(CREATE_TEMPLATE_TABLE);
+        sqLiteDatabase.execSQL(CREATE_COST_TABLE);
     }
 
 }

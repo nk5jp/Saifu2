@@ -5,12 +5,17 @@ import lombok.Getter;
 public class ExtraCost extends Cost {
 
     @Getter
-    private int plan;
+    private int estimate;
 
-    public ExtraCost(int id, int result, String name, int plan, boolean isValid, MyDate date)
+    public ExtraCost(int id, int estimate, int result, String name, boolean isValid, MyDate date)
     {
         super(id, name, result, isValid, date);
-        this.plan = plan;
+        this.estimate = estimate;
+    }
+
+    public int getTemplateId()
+    {
+        return SpecificId.MeansNull.getId();
     }
 
 }

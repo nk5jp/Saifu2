@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @AllArgsConstructor
-public class TemplateCost {
+public class Template {
 
     @Getter @Setter
     private int id;
@@ -13,11 +13,7 @@ public class TemplateCost {
     private String name;
     @Getter @Setter
     private boolean isControlled;
-
-    public int calclatePlan()
-    {
-        return 100;
-    }
-
+    @Getter @Setter
+    private boolean isValid;
 
 }

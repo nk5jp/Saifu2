@@ -18,7 +18,7 @@ import jp.nk5.saifu2.domain.Transfer;
 public class AccountRepositorySQLite implements AccountRepository {
 
     private static AccountRepositorySQLite instance;
-    private AccountDAO accountDao;
+    private AccountDAO accountDAO;
     private TransferDAO transferDAO;
     private List<Account> accounts;
     private List<Transfer> transfers;
@@ -34,16 +34,16 @@ public class AccountRepositorySQLite implements AccountRepository {
 
     private AccountRepositorySQLite (Context context) throws Exception
     {
-        accountDao = new AccountDAO(context);
+        accountDAO = new AccountDAO(context);
         transferDAO = new TransferDAO(context, this);
-        accounts = accountDao.readAll();
+        accounts = accountDAO.readAll();
         transfers = transferDAO.readAll();
     }
 
     @Override
     public void setAccount(String name) throws Exception {
         Account account = new Account(SpecificId.NotPersisted.getId(), name, 0, true);
-        accountDao.createAccount(account);
+        accountDAO.createAccount(account);
         accounts.add(account);
     }
 
@@ -51,14 +51,14 @@ public class AccountRepositorySQLite implements AccountRepository {
     public void openCloseAccount(int id) throws Exception {
         Account account = getAccount(id);
         account.setOpened(!account.isOpened());
-        accountDao.updateAccount(account);
+        accountDAO.updateAccount(account);
     }
 
     public void depositMoney(int id, int value) throws Exception {
 
         Account account = getAccount(id);
         account.setBalance(account.getBalance() + value);
-        accountDao.updateAccount(account);
+        accountDAO.updateAccount(account);
 
         Calendar calendar = Calendar.getInstance();
         MyDate today = new MyDate(
@@ -83,8 +83,8 @@ public class AccountRepositorySQLite implements AccountRepository {
         Account credit = getAccount(creditId);
         debit.setBalance(debit.getBalance() + value);
         credit.setBalance(credit.getBalance() - value);
-        accountDao.updateAccount(debit);
-        accountDao.updateAccount(credit);
+        accountDAO.updateAccount(debit);
+        accountDAO.updateAccount(credit);
 
         Calendar calendar = Calendar.getInstance();
         MyDate today = new MyDate(calendar.get(Calendar.YEAR),

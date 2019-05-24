@@ -5,15 +5,20 @@ import lombok.Getter;
 public class NormalCost extends Cost {
 
     @Getter
-    private int plan;
+    private int estimate;
     @Getter
-    private TemplateCost templateCost;
+    private Template template;
 
-    public NormalCost(int id, int result, boolean isValid, MyDate date, TemplateCost templateCost)
+    public NormalCost(int id, int estimate, int result, boolean isValid, MyDate date, Template template)
     {
-        super(id, templateCost.getName(), result, isValid, date);
-        this.plan = templateCost.calclatePlan();
-        this.templateCost = templateCost;
+        super(id, template.getName(), result, isValid, date);
+        this.estimate = estimate;
+        this.template = template;
+    }
+
+    public int getTemplateId()
+    {
+        return template.getId();
     }
 
 }

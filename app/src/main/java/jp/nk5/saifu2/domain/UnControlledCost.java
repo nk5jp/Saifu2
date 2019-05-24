@@ -2,17 +2,22 @@ package jp.nk5.saifu2.domain;
 
 public class UnControlledCost extends Cost {
 
-    private TemplateCost templateCost;
+    private Template template;
 
-    public UnControlledCost(int id, int result, boolean isValid, MyDate date, TemplateCost templateCost)
+    public UnControlledCost(int id, int result, boolean isValid, MyDate date, Template template)
     {
-        super(id, templateCost.getName(), result, isValid, date);
-        this.templateCost = templateCost;
+        super(id, template.getName(), result, isValid, date);
+        this.template = template;
     }
 
-    public int getPlan()
+    public int getEstimate()
     {
         return 0;
+    }
+
+    public int getTemplateId()
+    {
+        return template.getId();
     }
 
 }

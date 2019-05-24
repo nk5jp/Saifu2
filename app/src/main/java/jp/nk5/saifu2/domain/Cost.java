@@ -18,6 +18,7 @@ public abstract class Cost {
     @Getter
     private MyDate date;
 
-    public abstract int getPlan();
+    public abstract int getEstimate();
+    public abstract int getTemplateId();
 
 }
