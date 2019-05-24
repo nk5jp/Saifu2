@@ -21,7 +21,6 @@ public class SearchingTransferService {
      * @param context 依頼元のアクティビティ．リポジトリの初期化の都合上必要であり本クラスでは使用しない．
      * @param updateViewListener 画面モデルおよび表示更新の依頼先．実態は依頼元のフラグメント．
      * @param errorListener エラー表示の依頼先．実態は依頼元のアクティビティ．
-     * @throws Exception 初期化にかかる各種エラーが発生した場合
      */
     public SearchingTransferService(Context context, TransferHistoryFragment updateViewListener, BankActivity errorListener) throws Exception
     {
@@ -34,7 +33,6 @@ public class SearchingTransferService {
      * 画面モデルの振替リストを最新化する．これ自体が表示更新処理は担っていない点に注意．
      * @param year 対象年
      * @param month 対象月
-     * @throws Exception 処理の過程でエラーが発生した場合
      */
     public void updateTransferList(int year, int month) throws Exception
     {

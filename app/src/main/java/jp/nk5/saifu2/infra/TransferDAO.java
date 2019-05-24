@@ -58,7 +58,8 @@ class TransferDAO extends DAO<Transfer> {
     }
 
     @Override
-    ContentValues transformEntityToValues(Transfer entity) throws Exception {
+    ContentValues transformEntityToValues(Transfer entity)
+    {
         ContentValues values = new ContentValues();
         values.put("date", entity.getMyDate().getFullDate());
         values.put("debitId", entity.getDebit().getId());
@@ -76,7 +77,7 @@ class TransferDAO extends DAO<Transfer> {
     }
 
     @Override
-    void updateEntityById(Transfer entity, long rowId) throws Exception {
+    void updateEntityById(Transfer entity, long rowId) {
         entity.setId((int)rowId);
     }
 

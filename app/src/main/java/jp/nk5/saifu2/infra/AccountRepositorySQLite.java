@@ -87,8 +87,7 @@ public class AccountRepositorySQLite implements AccountRepository {
         accountDao.updateAccount(credit);
 
         Calendar calendar = Calendar.getInstance();
-        MyDate today = new MyDate(
-                calendar.get(Calendar.YEAR),
+        MyDate today = new MyDate(calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH) + 1,
                 calendar.get(Calendar.DATE)
         );
@@ -107,7 +106,7 @@ public class AccountRepositorySQLite implements AccountRepository {
     }
 
     @Override
-    public Account getAccount(int id) throws Exception
+    public Account getAccount(int id)
     {
         Optional<Account> optional = accounts.stream()
                 .filter(a -> a.getId() == id)
