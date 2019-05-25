@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import jp.nk5.saifu2.view.viewmodel.Menu;
+import jp.nk5.saifu2.view.viewmodel.menu.Menu;
 
 public class MenuListAdapter extends ArrayAdapter<Menu> {
 

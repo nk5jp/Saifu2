@@ -10,4 +10,8 @@
     <string name="str_reset">RESET</string>
     <string name="str_search">SEARCH</string>
     <string name="str_yyyymm">YYYYMM</string>
+    <string name="str_template_name">TEMPLATE_NAME</string>
+    <string name="str_add_template">ADD_TEMPLATE</string>
+    <string name="str_apply">APPLY</string>
+    <string name="str_estimate">ESTIMATE</string>
 </resources>

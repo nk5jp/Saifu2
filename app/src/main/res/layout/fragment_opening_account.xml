@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="jp.nk5.saifu2.view.OpeningAccountFragment">
+    tools:context="jp.nk5.saifu2.view.fragment.OpeningAccountFragment">
 
     <EditText
         android:id="@+id/editText1"

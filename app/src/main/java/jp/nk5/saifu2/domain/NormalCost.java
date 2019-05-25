@@ -1,5 +1,6 @@
 package jp.nk5.saifu2.domain;
 
+import jp.nk5.saifu2.domain.util.MyDate;
 import lombok.Getter;
 
 public class NormalCost extends Cost {

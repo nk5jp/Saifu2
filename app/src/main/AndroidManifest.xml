@@ -3,22 +3,25 @@
     package="jp.nk5.saifu2">
 
     <application
-        android:fullBackupContent="false"
         android:allowBackup="true"
+        android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".AccountBookActivity"></activity>
         <activity android:name=".TopActivity">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BankActivity"
-            android:windowSoftInputMode="stateHidden"/>
+        <activity
+            android:name=".BankActivity"
+            android:windowSoftInputMode="stateHidden" />
     </application>
 
 </manifest>

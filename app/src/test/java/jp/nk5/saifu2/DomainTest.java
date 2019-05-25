@@ -3,7 +3,7 @@ package jp.nk5.saifu2;
 import org.junit.Test;
 
 import jp.nk5.saifu2.domain.Account;
-import jp.nk5.saifu2.domain.SpecificId;
+import jp.nk5.saifu2.domain.util.SpecificId;
 
 import static org.junit.Assert.*;
 

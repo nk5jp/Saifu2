@@ -1,5 +1,7 @@
 package jp.nk5.saifu2.domain;
 
+import jp.nk5.saifu2.domain.util.MyDate;
+
 public class UnControlledCost extends Cost {
 
     private Template template;

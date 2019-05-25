@@ -10,13 +10,13 @@ import java.util.Calendar;
 import jp.nk5.saifu2.service.OpeningAccountService;
 import jp.nk5.saifu2.service.SearchingTransferService;
 import jp.nk5.saifu2.service.TransferService;
-import jp.nk5.saifu2.view.AccountFragment;
-import jp.nk5.saifu2.view.BankMenuFragment;
-import jp.nk5.saifu2.view.OpeningAccountFragment;
-import jp.nk5.saifu2.view.SearchingTransferFragment;
-import jp.nk5.saifu2.view.TransferFragment;
-import jp.nk5.saifu2.view.TransferHistoryFragment;
-import jp.nk5.saifu2.view.viewmodel.BankMenu;
+import jp.nk5.saifu2.view.fragment.AccountFragment;
+import jp.nk5.saifu2.view.fragment.menu.BankMenuFragment;
+import jp.nk5.saifu2.view.fragment.OpeningAccountFragment;
+import jp.nk5.saifu2.view.fragment.SearchingTransferFragment;
+import jp.nk5.saifu2.view.fragment.TransferFragment;
+import jp.nk5.saifu2.view.fragment.TransferHistoryFragment;
+import jp.nk5.saifu2.view.viewmodel.menu.BankMenu;
 
 /**
  * Account画面，Transfer画面，Transfer History画面を扱うアクティビティ．

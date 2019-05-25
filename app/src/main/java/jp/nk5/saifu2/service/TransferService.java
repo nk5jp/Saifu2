@@ -4,10 +4,10 @@ import android.content.Context;
 
 import jp.nk5.saifu2.BankActivity;
 import jp.nk5.saifu2.domain.Account;
-import jp.nk5.saifu2.domain.AccountRepository;
-import jp.nk5.saifu2.infra.AccountRepositorySQLite;
-import jp.nk5.saifu2.view.AccountFragment;
-import jp.nk5.saifu2.view.TransferFragment;
+import jp.nk5.saifu2.domain.repository.AccountRepository;
+import jp.nk5.saifu2.infra.repository.AccountRepositorySQLite;
+import jp.nk5.saifu2.view.fragment.AccountFragment;
+import jp.nk5.saifu2.view.fragment.TransferFragment;
 import jp.nk5.saifu2.view.viewmodel.AccountViewModel;
 import jp.nk5.saifu2.view.viewmodel.TransferViewModel;
 

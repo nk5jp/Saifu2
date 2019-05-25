@@ -3,9 +3,9 @@ package jp.nk5.saifu2.service;
 import android.content.Context;
 
 import jp.nk5.saifu2.BankActivity;
-import jp.nk5.saifu2.domain.AccountRepository;
-import jp.nk5.saifu2.infra.AccountRepositorySQLite;
-import jp.nk5.saifu2.view.AccountFragment;
+import jp.nk5.saifu2.domain.repository.AccountRepository;
+import jp.nk5.saifu2.infra.repository.AccountRepositorySQLite;
+import jp.nk5.saifu2.view.fragment.AccountFragment;
 
 /**
  * 口座の開設・閉塞に関する処理を担う．

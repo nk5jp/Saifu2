@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 
-import jp.nk5.saifu2.view.TopFragment;
-import jp.nk5.saifu2.view.TopMenuFragment;
-import jp.nk5.saifu2.view.viewmodel.TopMenu;
+import jp.nk5.saifu2.view.fragment.TopFragment;
+import jp.nk5.saifu2.view.fragment.menu.TopMenuFragment;
+import jp.nk5.saifu2.view.viewmodel.menu.TopMenu;
 
 public class TopActivity extends BaseActivity implements TopMenuFragment.EventListener {
 
@@ -30,11 +30,13 @@ public class TopActivity extends BaseActivity implements TopMenuFragment.EventLi
         switch (menu)
         {
             case ACCOUNT_BOOK:
+                Intent intent = new Intent(this, AccountBookActivity.class);
+                startActivity(intent);
                 break;
             case SHOP:
                 break;
             case BANK:
-                Intent intent = new Intent(this, BankActivity.class);
+                intent = new Intent(this, BankActivity.class);
                 startActivity(intent);
                 break;
         }
