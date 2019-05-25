@@ -63,7 +63,7 @@ public class AccountBookActivity extends BaseActivity
      * 指定されたメニューに合わせた画面の初期表示処理を行う
      * @param menu 表示するメニュー
      */
-    private void setScreen(AccountBookMenu menu) throws Exception
+    private void setScreen(AccountBookMenu menu)
     {
         switch (menu)
         {
@@ -81,7 +81,7 @@ public class AccountBookActivity extends BaseActivity
     /**
      * フラグメントの差し替えと，画面モデルの初期化を行う．
      */
-    private void setSearcingCostScreen() throws Exception
+    private void setSearcingCostScreen()
     {
         //openingAccountService.updateAccountList();
         fragmentManager.beginTransaction()
@@ -95,7 +95,7 @@ public class AccountBookActivity extends BaseActivity
     /**
      * フラグメントの差し替えと，画面モデルの初期化を行う．
      */
-    private void setCreatingTemplateScreen() throws Exception
+    private void setCreatingTemplateScreen()
     {
         //openingAccountService.updateAccountList();
         fragmentManager.beginTransaction()

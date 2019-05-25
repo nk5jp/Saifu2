@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/str_template_name"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:importantForAutofill="no" />
 
     <CheckBox
         android:id="@+id/checkBox1"
@@ -24,12 +25,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="onClickAddTemplateButton"
-        android:text="@string/str_add_template" />
+        android:text="@string/str_add_template"
+        tools:ignore="OnClick" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="onClickApplyButton"
-        android:text="@string/str_apply" />
+        android:text="@string/str_apply"
+        tools:ignore="OnClick" />
 </android.widget.LinearLayout>

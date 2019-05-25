@@ -21,7 +21,6 @@ public class OpeningAccountService {
      * @param context 依頼元のアクティビティ．リポジトリの初期化の都合上必要であり本クラスでは使用しない．
      * @param updateViewListener 画面モデルおよび表示更新の依頼先．実態は依頼元のフラグメント．
      * @param errorListener エラー表示の依頼先．実態は依頼元のアクティビティ．
-     * @throws Exception 初期化にかかる各種エラーが発生した場合
      */
     public OpeningAccountService(Context context, AccountFragment updateViewListener, BankActivity errorListener) throws Exception
     {
@@ -79,12 +78,10 @@ public class OpeningAccountService {
      * 指定した名前の口座が既に存在するか確認する
      * @param name 検証したい名称
      * @return 重複している
-     * @throws Exception 検証における各種処理でエラーが発生した場合
      */
     private boolean isDuplicated(String name) throws Exception
     {
             return repository.getAllAccount().stream()
-                    .filter(a -> a.getName().equals(name))
-                    .count() != 0;
+                    .anyMatch(a -> a.getName().equals(name));
     }
 }

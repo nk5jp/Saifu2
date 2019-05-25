@@ -42,7 +42,7 @@ public class AccountDAO extends DAO<Account> {
          );
     }
 
-    public ContentValues transformEntityToValues(Account entity) throws Exception
+    public ContentValues transformEntityToValues(Account entity)
     {
         ContentValues values = new ContentValues();
         values.put("name", entity.getName());
@@ -51,7 +51,7 @@ public class AccountDAO extends DAO<Account> {
         return values;
     }
 
-    public void updateEntityById(Account entity, long rowId) throws Exception
+    public void updateEntityById(Account entity, long rowId)
     {
         entity.setId((int)rowId);
     }

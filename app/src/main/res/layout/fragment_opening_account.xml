@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:hint="@string/str_account_name" />
+        android:hint="@string/str_account_name"
+        android:importantForAutofill="no" />
 
     <Button
         android:id="@+id/button1"

@@ -27,7 +27,6 @@ public class TransferService {
      * @param updateFormViewListener 画面モデルおよび表示更新の依頼先．実態は依頼元のフラグメント．
      * @param updateInfoViewListener 画面モデルおよび表示更新の依頼先．実態は依頼元のフラグメント．
      * @param errorListener エラー表示の依頼先．実態は依頼元のアクティビティ．
-     * @throws Exception 初期化にかかる各種エラーが発生した場合
      */
     public TransferService(Context context, TransferFragment updateFormViewListener, AccountFragment updateInfoViewListener, BankActivity errorListener) throws Exception
     {
