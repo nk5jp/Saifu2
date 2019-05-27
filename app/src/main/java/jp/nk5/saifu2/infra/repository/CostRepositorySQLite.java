@@ -9,6 +9,7 @@ import java.util.Optional;
 import jp.nk5.saifu2.domain.Cost;
 import jp.nk5.saifu2.domain.repository.CostRepository;
 import jp.nk5.saifu2.domain.Template;
+import jp.nk5.saifu2.domain.util.SpecificId;
 import jp.nk5.saifu2.infra.dao.CostDAO;
 import jp.nk5.saifu2.infra.dao.TemplateDAO;
 
@@ -36,6 +37,26 @@ public class CostRepositorySQLite implements CostRepository {
         templates = templateDAO.readAll();
         costs = costDAO.readAll();
     }
+
+    public void setTemplate(String name, boolean isControlled) throws Exception
+    {
+        Template template = new Template(SpecificId.NotPersisted.getId(), name, isControlled, true);
+        templateDAO.createTemplate(template);
+        templates.add(template);
+    }
+
+    public void openCloseTemplate(int id) throws Exception
+    {
+        Template template = getTemplateById(id);
+        template.setValid(!template.isValid());
+        templateDAO.updateTemplate(template);
+    }
+
+    public List<Template> getAllTemplate()
+    {
+        return templates;
+    }
+
 
     public Template getTemplateById(int id)
     {

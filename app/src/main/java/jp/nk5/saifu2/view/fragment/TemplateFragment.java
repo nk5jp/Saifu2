@@ -15,12 +15,14 @@ import java.util.ArrayList;
 
 import jp.nk5.saifu2.R;
 import jp.nk5.saifu2.adapter.AccountListAdapter;
+import jp.nk5.saifu2.adapter.TemplateListAdapter;
 import jp.nk5.saifu2.view.viewmodel.AccountViewModel;
+import jp.nk5.saifu2.view.viewmodel.TemplateViewModel;
 
 public class TemplateFragment extends Fragment implements ListView.OnItemClickListener, ListView.OnItemLongClickListener {
 
     private EventListener listener;
-    private AccountViewModel viewModel = new AccountViewModel(new ArrayList<>());
+    private TemplateViewModel viewModel = new TemplateViewModel(new ArrayList<>());
     private View layout;
 
     public interface EventListener {
@@ -60,7 +62,7 @@ public class TemplateFragment extends Fragment implements ListView.OnItemClickLi
         }
     }
 
-    public AccountViewModel getViewModel()
+    public TemplateViewModel getViewModel()
     {
         return this.viewModel;
     }
@@ -80,7 +82,7 @@ public class TemplateFragment extends Fragment implements ListView.OnItemClickLi
         Context context = this.getContext();
         if (context != null) {
             ListView listView = layout.findViewById(R.id.listView1);
-            listView.setAdapter(new AccountListAdapter(context, android.R.layout.simple_list_item_1, viewModel.getAccounts()));
+            listView.setAdapter(new TemplateListAdapter(context, android.R.layout.simple_list_item_1, viewModel.getTemplates()));
         }
     }
 

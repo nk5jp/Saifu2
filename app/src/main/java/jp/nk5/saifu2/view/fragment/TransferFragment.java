@@ -13,6 +13,9 @@ import android.widget.TextView;
 import jp.nk5.saifu2.R;
 import jp.nk5.saifu2.view.viewmodel.TransferViewModel;
 
+/**
+ * Transfer画面の入力部を扱うフラグメント．
+ */
 public class TransferFragment extends Fragment {
 
     private TransferViewModel viewModel = new TransferViewModel(null, null);
@@ -30,6 +33,9 @@ public class TransferFragment extends Fragment {
         return layout;
     }
 
+    /**
+     * replaceのたびに画面モデルを初期化する
+     */
     @Override
     public void onAttach(Context context)
     {

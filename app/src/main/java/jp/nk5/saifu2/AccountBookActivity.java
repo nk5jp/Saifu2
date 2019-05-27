@@ -3,9 +3,12 @@ package jp.nk5.saifu2;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
+import android.view.View;
 
 import java.util.Calendar;
 
+import jp.nk5.saifu2.service.CreatingTemplateService;
+import jp.nk5.saifu2.view.fragment.TemplateFragment;
 import jp.nk5.saifu2.view.fragment.menu.AccountBookMenuFragment;
 import jp.nk5.saifu2.view.fragment.CreatingTemplateFragment;
 import jp.nk5.saifu2.view.viewmodel.menu.AccountBookMenu;
@@ -15,9 +18,15 @@ import jp.nk5.saifu2.view.viewmodel.menu.AccountBookMenu;
  * 初期表示はAccount画面とする．
  */
 public class AccountBookActivity extends BaseActivity
-        implements AccountBookMenuFragment.EventListener {
+        implements AccountBookMenuFragment.EventListener, TemplateFragment.EventListener {
 
     private FragmentManager fragmentManager;
+
+    private TemplateFragment templateFragment;
+    private CreatingTemplateFragment creatingTemplateFragment;
+
+    private CreatingTemplateService creatingTemplateService;
+
     private AccountBookMenu currentMenu;
     private int year;
     private int month;
@@ -33,7 +42,8 @@ public class AccountBookActivity extends BaseActivity
         setContentView(R.layout.activity_bank);
 
         fragmentManager = getSupportFragmentManager();
-        //accountFragment = new AccountFragment();
+        templateFragment = new TemplateFragment();
+        creatingTemplateFragment = new CreatingTemplateFragment();
 
         currentMenu = AccountBookMenu.COST;
         Calendar calendar = Calendar.getInstance();
@@ -49,10 +59,11 @@ public class AccountBookActivity extends BaseActivity
         super.onStart();
 
         try {
-            //openingAccountService = new OpeningAccountService(this,
-            //        accountFragment,
-            //        this
-            //);
+            creatingTemplateService = new CreatingTemplateService(this,
+                    creatingTemplateFragment,
+                    templateFragment,
+                    this
+            );
             setScreen(currentMenu);
         } catch (Exception e) {
             super.onDestroy();
@@ -63,12 +74,12 @@ public class AccountBookActivity extends BaseActivity
      * 指定されたメニューに合わせた画面の初期表示処理を行う
      * @param menu 表示するメニュー
      */
-    private void setScreen(AccountBookMenu menu)
+    private void setScreen(AccountBookMenu menu) throws Exception
     {
         switch (menu)
         {
             case COST:
-                setSearcingCostScreen();
+                setSearchingCostScreen();
                 break;
             case TEMPLATE:
                 setCreatingTemplateScreen();
@@ -81,7 +92,7 @@ public class AccountBookActivity extends BaseActivity
     /**
      * フラグメントの差し替えと，画面モデルの初期化を行う．
      */
-    private void setSearcingCostScreen()
+    private void setSearchingCostScreen()
     {
         //openingAccountService.updateAccountList();
         fragmentManager.beginTransaction()
@@ -95,16 +106,40 @@ public class AccountBookActivity extends BaseActivity
     /**
      * フラグメントの差し替えと，画面モデルの初期化を行う．
      */
-    private void setCreatingTemplateScreen()
+    private void setCreatingTemplateScreen() throws Exception
     {
-        //openingAccountService.updateAccountList();
+        creatingTemplateService.updateTemplateList();
         fragmentManager.beginTransaction()
                 .replace(R.id.layout_menu, new AccountBookMenuFragment(), AccountBookMenuFragment.getTagName())
-                .replace(R.id.layout_form, new CreatingTemplateFragment(), CreatingTemplateFragment.getTagName())
-                //.replace(R.id.layout_information, accountFragment, AccountFragment.getTagName())
+                .replace(R.id.layout_form, creatingTemplateFragment, CreatingTemplateFragment.getTagName())
+                .replace(R.id.layout_information, templateFragment, TemplateFragment.getTagName())
                 .commit();
-        currentMenu = AccountBookMenu.COST;
+        currentMenu = AccountBookMenu.TEMPLATE;
     }
+
+    /**
+     * Template画面のADD/EDIT_TEMPLATEボタン押下時の処理
+     * テンプレートを作成もしくは編集し，画面モデルの更新と表示を行う．
+     */
+    public void onClickAddTemplateButton(View view)
+    {
+        try {
+            String name = getStringFromEditText(R.id.editText1);
+            boolean isControlled = isCheckedFromCheckBox(R.id.checkBox1);
+            creatingTemplateService.createTemplate(name, isControlled);
+        } catch (Exception e) {
+            showError("enter NAME");
+        }
+    }
+
+    public boolean onItemLongClick(int position) {
+        return true;
+    }
+
+    public void onItemClick(int position) {
+        ;
+    }
+
 
     /**
      * ドロワーを閉じた上で，ドロワー上で選択した画面に遷移する

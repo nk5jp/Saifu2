@@ -1,6 +1,7 @@
 package jp.nk5.saifu2;
 
 import android.support.v7.app.AppCompatActivity;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -22,7 +23,6 @@ public abstract class BaseActivity extends AppCompatActivity {
      * Viewから文字列を取得する
      * @param id ViewのID
      * @return そのViewに格納されている文字列
-     * @throws Exception viewが見つからない場合，もしくはテキストが空文字である場合
      */
     protected String getStringFromEditText (int id) throws Exception
     {
@@ -36,12 +36,17 @@ public abstract class BaseActivity extends AppCompatActivity {
      * Viewから数字を取得する
      * @param id ViewのID
      * @return そのViewに格納されている数字
-     * @throws Exception viewが見つからない場合，もしくは値の整数化に失敗した場合
      */
-    protected int getIntFromEditText (int id) throws Exception
+    protected int getIntFromEditText (int id)
     {
         EditText view = findViewById(id);
         return Integer.parseInt(view.getText().toString());
+    }
+
+    protected boolean isCheckedFromCheckBox (int id)
+    {
+        CheckBox view = findViewById(id);
+        return view.isChecked();
     }
 
 }

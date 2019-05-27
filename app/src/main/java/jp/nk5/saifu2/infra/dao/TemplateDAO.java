@@ -11,8 +11,6 @@ import jp.nk5.saifu2.infra.util.SQLiteBoolean;
 
 public class TemplateDAO extends DAO<Template> {
 
-    private Context context;
-
     public TemplateDAO(Context context)
     {
         super(context);
@@ -46,7 +44,6 @@ public class TemplateDAO extends DAO<Template> {
     @Override
     ContentValues transformEntityToValues(Template entity) {
         ContentValues values = new ContentValues();
-        values.put("id", entity.getId());
         values.put("name", entity.getName());
         values.put("isControlled", SQLiteBoolean.getInt(entity.isControlled()));
         values.put("isValid", SQLiteBoolean.getInt(entity.isValid()));

@@ -36,7 +36,8 @@ public class CostDAO extends DAO<Cost> {
     }
 
     @Override
-    Cost transformCursorToEntity(Cursor cursor) {
+    Cost transformCursorToEntity(Cursor cursor) throws Exception
+    {
 
         int id = cursor.getInt(cursor.getColumnIndex("id"));
         String name = cursor.getString(cursor.getColumnIndex("name"));
