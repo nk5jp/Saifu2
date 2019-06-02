@@ -45,7 +45,15 @@ public class CostRepositorySQLite implements CostRepository {
         templates.add(template);
     }
 
-    public void openCloseTemplate(int id) throws Exception
+    public void updateTemplate(int id, String name, boolean isControlled) throws Exception
+    {
+        Template template = getTemplateById(id);
+        template.setName(name);
+        template.setControlled(isControlled);
+        templateDAO.updateTemplate(template);
+    }
+
+    public void validInvalidTemplate(int id) throws Exception
     {
         Template template = getTemplateById(id);
         template.setValid(!template.isValid());

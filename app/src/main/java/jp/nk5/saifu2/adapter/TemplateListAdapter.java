@@ -37,7 +37,7 @@ public class TemplateListAdapter extends ArrayAdapter<TemplateViewModel.Template
             TextView textView = view.findViewById(android.R.id.text1);
 
             if (templateForView.getTemplate().isControlled()) textView.setText(templateForView.getTemplate().getName());
-            else textView.setText(String.format("%s (UnControlled)", templateForView.getTemplate().getName()));
+            else textView.setText(String.format("%s (UC)", templateForView.getTemplate().getName()));
 
             if (!templateForView.getTemplate().isValid()) textView.setBackgroundColor(Color.GRAY);
             else if (templateForView.isSelected()) textView.setBackgroundColor(Color.YELLOW);

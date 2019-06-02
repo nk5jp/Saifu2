@@ -1,6 +1,5 @@
 package jp.nk5.saifu2.view.viewmodel;
 
-import jp.nk5.saifu2.domain.Template;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +8,10 @@ import lombok.Setter;
 public class CreatingTemplateViewModel {
 
     @Getter @Setter
-    private Template template;
+    private int id;
+    @Getter @Setter
+    private String name;
+    @Getter @Setter
+    private boolean controlled;
 
 }

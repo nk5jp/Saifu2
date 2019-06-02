@@ -12,19 +12,15 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import jp.nk5.saifu2.R;
-import jp.nk5.saifu2.domain.Template;
 import jp.nk5.saifu2.domain.util.SpecificId;
 import jp.nk5.saifu2.view.viewmodel.CreatingTemplateViewModel;
 
 public class CreatingTemplateFragment extends Fragment {
 
     private CreatingTemplateViewModel viewModel = new CreatingTemplateViewModel(
-            new Template(
-                    SpecificId.NotPersisted.getId(),
-                    "",
-                    false,
-                    true
-            )
+            SpecificId.NotPersisted.getId(),
+            "",
+            false
     );
     private View layout;
 
@@ -44,14 +40,7 @@ public class CreatingTemplateFragment extends Fragment {
     public void onAttach(Context context)
     {
         super.onAttach(context);
-        viewModel.setTemplate(
-                new Template(
-                        SpecificId.NotPersisted.getId(),
-                        "",
-                        false,
-                        true
-                )
-        );
+        initializeViewModel();
     }
 
     @Override
@@ -63,19 +52,34 @@ public class CreatingTemplateFragment extends Fragment {
 
     public void updateView()
     {
-        Template template = viewModel.getTemplate();
-
         EditText editText = layout.findViewById(R.id.editText1);
-        editText.setText(template.getName());
+        editText.setText(viewModel.getName());
 
         CheckBox checkBox = layout.findViewById(R.id.checkBox1);
-        checkBox.setChecked(template.isControlled());
+        checkBox.setChecked(viewModel.isControlled());
 
         Button button = layout.findViewById(R.id.button1);
-        if (template.getId() == SpecificId.MeansNull.getId()) button.setText(R.string.str_add_template);
+        if (viewModel.getId() == SpecificId.NotPersisted.getId()) button.setText(R.string.str_add_template);
         else button.setText(R.string.str_edit_template);
-
     }
 
+    /**
+     * 各情報をクリアする，画面表示まで行う
+     */
+    public void clearView()
+    {
+        initializeViewModel();
+        updateView();
+    }
+
+    /**
+     * こちらは初期化処理のみ行う
+     */
+    private void initializeViewModel()
+    {
+        viewModel.setId(SpecificId.NotPersisted.getId());
+        viewModel.setName("");
+        viewModel.setControlled(false);
+    }
 
 }

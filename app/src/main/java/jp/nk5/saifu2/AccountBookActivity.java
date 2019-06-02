@@ -132,12 +132,29 @@ public class AccountBookActivity extends BaseActivity
         }
     }
 
+    /**
+     * 長押しされた口座を閉塞して表示をアップデートする．
+     * @param position 長押しされた口座の行番．
+     * @return 継承元のとおり．特に意味はなし．
+     */
     public boolean onItemLongClick(int position) {
+        int id = templateFragment.getViewModel().getTemplates().get(position).getTemplate().getId();
+        creatingTemplateService.updateTemplateStatus(id);
         return true;
     }
 
+    /**
+     * ポジションに該当するテンプレートのIDを取得し，サービスに選択処理を依頼する．
+     * @param position 選択したリストの行数
+     */
     public void onItemClick(int position) {
-        ;
+        try
+        {
+            creatingTemplateService.selectTemplate(position);
+        } catch (Exception e) {
+            showError("cannot select.");
+        }
+
     }
 
 

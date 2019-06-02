@@ -2,11 +2,15 @@ package jp.nk5.saifu2.service;
 
 import android.content.Context;
 
+import java.util.Optional;
+
 import jp.nk5.saifu2.AccountBookActivity;
 import jp.nk5.saifu2.domain.repository.CostRepository;
+import jp.nk5.saifu2.domain.util.SpecificId;
 import jp.nk5.saifu2.infra.repository.CostRepositorySQLite;
 import jp.nk5.saifu2.view.fragment.CreatingTemplateFragment;
 import jp.nk5.saifu2.view.fragment.TemplateFragment;
+import jp.nk5.saifu2.view.viewmodel.TemplateViewModel;
 
 public class CreatingTemplateService {
 
@@ -44,9 +48,19 @@ public class CreatingTemplateService {
                 errorListener.showError("Name is duplicated.");
                 return;
             }
-            repository.setTemplate(name, isControlled);
-            updateTemplateList();
-            updateInfoViewListener.updateView();
+
+            int id = updateFormViewListener.getViewModel().getId();
+
+            if (id == SpecificId.NotPersisted.getId()) {
+                repository.setTemplate(name, isControlled);
+                updateTemplateList();
+                updateInfoViewListener.updateView();
+            } else {
+                repository.updateTemplate(id, name, isControlled);
+                updateTemplateList();
+                updateFormViewListener.clearView();
+                updateInfoViewListener.updateView();
+            }
         } catch (Exception e) {
             errorListener.showError(e.getMessage());
         }
@@ -63,6 +77,57 @@ public class CreatingTemplateService {
     }
 
     /**
+     * 以下の優先順位で選択状態および画面モードを変更して反映する．
+     * 選択したものが有効でない場合，何もしない．
+     * 選択したものが未選択である場合，そのテンプレートを選択し，画面を編集モードにする
+     * 選択したものが選択である場合，そのテンプレートの選択を解除し，画面を追加モードにする
+     * @param position 選択したテンプレートリストの行番号
+     */
+    public void selectTemplate(int position)
+    {
+        try {
+            TemplateViewModel.TemplateForView templateForView = updateInfoViewListener
+                    .getViewModel()
+                    .getTemplates()
+                    .get(position);
+
+            if (!templateForView.getTemplate().isValid()) return;
+
+            if (templateForView.isSelected()) {
+                templateForView.setSelected(false);
+                updateFormViewListener.clearView();
+                updateInfoViewListener.updateView();
+            } else {
+                int currentSelected = updateFormViewListener.getViewModel().getId();
+                unSelectedTemplate(currentSelected);
+                templateForView.setSelected(true);
+                bindTempalate(templateForView);
+
+                updateFormViewListener.updateView();
+                updateInfoViewListener.updateView();
+            }
+        } catch (Exception e) {
+            errorListener.showError(e.getMessage());
+        }
+    }
+
+    /**
+     * 指定したIDのテンプレートの有効・無効状態をスイッチし，
+     * 画面モデルを最新化して画面表示を更新する．
+     * @param id スイッチするテンプレートのID
+     */
+    public void updateTemplateStatus(int id)
+    {
+        try {
+            repository.validInvalidTemplate(id);
+            updateTemplateList();
+            updateInfoViewListener.updateView();
+        } catch (Exception e) {
+            errorListener.showError(e.getMessage());
+        }
+    }
+
+    /**
      * 指定した名前のテンプレートが既に存在するか確認する
      * @param name 検証したい名称
      * @return 重複している
@@ -72,5 +137,36 @@ public class CreatingTemplateService {
         return repository.getAllTemplate().stream()
                 .anyMatch(a -> a.getName().equals(name));
     }
+
+    /**
+     * 指定したidに対応するテンプレートの選択を解除する
+     * @param id 選択を解除したいテンプレート
+     */
+    private void unSelectedTemplate(int id) throws Exception
+    {
+        Optional<TemplateViewModel.TemplateForView> templateForView
+                = updateInfoViewListener.getViewModel().getTemplates().stream()
+                .filter(t -> t.getTemplate().getId() == id)
+                .findFirst();
+
+        if (templateForView.isPresent())
+        {
+            templateForView.get().setSelected(false);
+        } else {
+            throw new Exception();
+        }
+    }
+
+    /**
+     * 選択したテンプレートの情報をフォーム側にバインドする
+     * @param templateForView 選択したテンプレート
+     */
+    private void bindTempalate(TemplateViewModel.TemplateForView templateForView)
+    {
+        updateFormViewListener.getViewModel().setId(templateForView.getTemplate().getId());
+        updateFormViewListener.getViewModel().setName(templateForView.getTemplate().getName());
+        updateFormViewListener.getViewModel().setControlled(templateForView.getTemplate().isControlled());
+    }
+
 
 }

@@ -7,7 +7,8 @@ import jp.nk5.saifu2.domain.Template;
 public interface CostRepository {
 
     void setTemplate(String name, boolean isControlled) throws Exception;
-    void openCloseTemplate(int id) throws Exception;
+    void updateTemplate(int id, String name, boolean isControlled) throws  Exception;
+    void validInvalidTemplate(int id) throws Exception;
     List<Template> getAllTemplate() throws Exception;
     Template getTemplateById(int id) throws Exception;
 
