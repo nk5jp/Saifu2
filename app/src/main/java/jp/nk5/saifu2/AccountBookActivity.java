@@ -8,22 +8,25 @@ import android.view.View;
 import java.util.Calendar;
 
 import jp.nk5.saifu2.service.CreatingTemplateService;
+import jp.nk5.saifu2.view.fragment.CostFragment;
+import jp.nk5.saifu2.view.fragment.SearchingCostFragment;
 import jp.nk5.saifu2.view.fragment.TemplateFragment;
 import jp.nk5.saifu2.view.fragment.menu.AccountBookMenuFragment;
 import jp.nk5.saifu2.view.fragment.CreatingTemplateFragment;
 import jp.nk5.saifu2.view.viewmodel.menu.AccountBookMenu;
 
 /**
- * Account画面，Transfer画面，Transfer History画面を扱うアクティビティ．
- * 初期表示はAccount画面とする．
+ * Cost画面，Template画面，Extra画面を扱うアクティビティ．
+ * 初期表示はCost画面とする．
  */
 public class AccountBookActivity extends BaseActivity
-        implements AccountBookMenuFragment.EventListener, TemplateFragment.EventListener {
+        implements AccountBookMenuFragment.EventListener, TemplateFragment.EventListener, CostFragment.EventListener {
 
     private FragmentManager fragmentManager;
 
     private TemplateFragment templateFragment;
     private CreatingTemplateFragment creatingTemplateFragment;
+    private CostFragment costFragment;
 
     private CreatingTemplateService creatingTemplateService;
 
@@ -43,6 +46,7 @@ public class AccountBookActivity extends BaseActivity
 
         fragmentManager = getSupportFragmentManager();
         templateFragment = new TemplateFragment();
+        costFragment = new CostFragment();
         creatingTemplateFragment = new CreatingTemplateFragment();
 
         currentMenu = AccountBookMenu.COST;
@@ -97,8 +101,8 @@ public class AccountBookActivity extends BaseActivity
         //openingAccountService.updateAccountList();
         fragmentManager.beginTransaction()
                 .replace(R.id.layout_menu, new AccountBookMenuFragment(), AccountBookMenuFragment.getTagName())
-                //.replace(R.id.layout_form, new OpeningAccountFragment(), OpeningAccountFragment.getTagName())
-                //.replace(R.id.layout_information, accountFragment, AccountFragment.getTagName())
+                .replace(R.id.layout_form, new SearchingCostFragment(), SearchingCostFragment.getTagName())
+                .replace(R.id.layout_information, costFragment, CostFragment.getTagName())
                 .commit();
         currentMenu = AccountBookMenu.COST;
     }
