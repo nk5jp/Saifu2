@@ -38,7 +38,7 @@ public class TransferListAdapter extends ArrayAdapter<Transfer> {
                             String.format(
                                     Locale.JAPAN,
                                     "%s:%sに%,d円を振込",
-                                    transfer.getMyDate().getFullDateWithFormat(),
+                                    transfer.getDate().getFullDateWithFormat(),
                                     transfer.getDebit().getName(),
                                     transfer.getValue()
                             )
@@ -49,7 +49,7 @@ public class TransferListAdapter extends ArrayAdapter<Transfer> {
                             String.format(
                                     Locale.JAPAN,
                                     "%s:%sから%sに%,d円を振替",
-                                    transfer.getMyDate().getFullDateWithFormat(),
+                                    transfer.getDate().getFullDateWithFormat(),
                                     transfer.getCredit().getName(),
                                     transfer.getDebit().getName(),
                                     transfer.getValue()

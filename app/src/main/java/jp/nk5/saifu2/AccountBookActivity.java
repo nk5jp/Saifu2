@@ -8,6 +8,7 @@ import android.view.View;
 import java.util.Calendar;
 
 import jp.nk5.saifu2.service.CreatingTemplateService;
+import jp.nk5.saifu2.service.SearchingCostService;
 import jp.nk5.saifu2.view.fragment.CostFragment;
 import jp.nk5.saifu2.view.fragment.SearchingCostFragment;
 import jp.nk5.saifu2.view.fragment.TemplateFragment;
@@ -29,6 +30,7 @@ public class AccountBookActivity extends BaseActivity
     private CostFragment costFragment;
 
     private CreatingTemplateService creatingTemplateService;
+    private SearchingCostService searchingCostService;
 
     private AccountBookMenu currentMenu;
     private int year;
@@ -68,6 +70,10 @@ public class AccountBookActivity extends BaseActivity
                     templateFragment,
                     this
             );
+            searchingCostService = new SearchingCostService(this,
+                    costFragment,
+                    this
+            );
             setScreen(currentMenu);
         } catch (Exception e) {
             super.onDestroy();
@@ -96,9 +102,9 @@ public class AccountBookActivity extends BaseActivity
     /**
      * フラグメントの差し替えと，画面モデルの初期化を行う．
      */
-    private void setSearchingCostScreen()
+    private void setSearchingCostScreen() throws Exception
     {
-        //openingAccountService.updateAccountList();
+        searchingCostService.updateCostList(year, month);
         fragmentManager.beginTransaction()
                 .replace(R.id.layout_menu, new AccountBookMenuFragment(), AccountBookMenuFragment.getTagName())
                 .replace(R.id.layout_form, new SearchingCostFragment(), SearchingCostFragment.getTagName())
@@ -133,6 +139,21 @@ public class AccountBookActivity extends BaseActivity
             creatingTemplateService.createTemplate(name, isControlled);
         } catch (Exception e) {
             showError("enter NAME");
+        }
+    }
+
+    /**
+     * Cost画面のSEARCHボタン押下時の処理
+     * 該当する年月の費目を取得し，画面モデルの更新と表示を行う
+     * @param view Cost画面上のSEARCHボタン
+     */
+    public void onClickSearchButton(View view)
+    {
+        try {
+            int date = getIntFromEditText(R.id.editText1);
+            searchingCostService.getSpecificCost(date);
+        } catch (Exception e) {
+            showError("enter integer with YYYYMM format");
         }
     }
 

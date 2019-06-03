@@ -61,7 +61,7 @@ public class TransferDAO extends DAO<Transfer> {
     ContentValues transformEntityToValues(Transfer entity)
     {
         ContentValues values = new ContentValues();
-        values.put("date", entity.getMyDate().getFullDate());
+        values.put("date", entity.getDate().getFullDate());
         values.put("debitId", entity.getDebit().getId());
         values.put("value", entity.getValue());
         switch(entity.getTransferType())

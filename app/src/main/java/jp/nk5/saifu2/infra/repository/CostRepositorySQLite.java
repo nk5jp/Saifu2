@@ -5,8 +5,10 @@ import android.content.Context;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import jp.nk5.saifu2.domain.Cost;
+import jp.nk5.saifu2.domain.Transfer;
 import jp.nk5.saifu2.domain.repository.CostRepository;
 import jp.nk5.saifu2.domain.Template;
 import jp.nk5.saifu2.domain.util.SpecificId;
@@ -45,21 +47,6 @@ public class CostRepositorySQLite implements CostRepository {
         templates.add(template);
     }
 
-    public void updateTemplate(int id, String name, boolean isControlled) throws Exception
-    {
-        Template template = getTemplateById(id);
-        template.setName(name);
-        template.setControlled(isControlled);
-        templateDAO.updateTemplate(template);
-    }
-
-    public void validInvalidTemplate(int id) throws Exception
-    {
-        Template template = getTemplateById(id);
-        template.setValid(!template.isValid());
-        templateDAO.updateTemplate(template);
-    }
-
     public List<Template> getAllTemplate()
     {
         return templates;
@@ -77,6 +64,29 @@ public class CostRepositorySQLite implements CostRepository {
         } else {
             throw new NoSuchElementException();
         }
+    }
+
+    public void updateTemplate(int id, String name, boolean isControlled) throws Exception
+    {
+        Template template = getTemplateById(id);
+        template.setName(name);
+        template.setControlled(isControlled);
+        templateDAO.updateTemplate(template);
+    }
+
+    public void validInvalidTemplate(int id) throws Exception
+    {
+        Template template = getTemplateById(id);
+        template.setValid(!template.isValid());
+        templateDAO.updateTemplate(template);
+    }
+
+    @Override
+    public List<Cost> getSpecificCost(int year, int month)
+    {
+        return costs.stream()
+                .filter(t -> t.getDate().getYear() == year && t.getDate().getMonth() == month)
+                .collect(Collectors.toList());
     }
 
     public int calculateEstimate(int id)

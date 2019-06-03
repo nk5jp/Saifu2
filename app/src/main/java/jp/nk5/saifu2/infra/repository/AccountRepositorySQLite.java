@@ -134,7 +134,7 @@ public class AccountRepositorySQLite implements AccountRepository {
     public List<Transfer> getSpecificTransfer(int year, int month)
     {
         return transfers.stream()
-                .filter(t -> t.getMyDate().getYear() == year && t.getMyDate().getMonth() == month)
+                .filter(t -> t.getDate().getYear() == year && t.getDate().getMonth() == month)
                 .collect(Collectors.toList());
     }
 

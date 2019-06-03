@@ -9,7 +9,7 @@ public class Transfer {
     @Getter @Setter
     private int id;
     @Getter
-    private MyDate myDate;
+    private MyDate date;
     @Getter
     private Account debit;
     @Getter
@@ -21,15 +21,15 @@ public class Transfer {
 
     public static class Builder {
         private int id;
-        private MyDate myDate;
+        private MyDate date;
         private Account debit;
         private Account credit = null;
         private int value;
 
-        public Builder (int id, MyDate myDate, Account debit, int value)
+        public Builder (int id, MyDate date, Account debit, int value)
         {
             this.id = id;
-            this.myDate = myDate;
+            this.date = date;
             this.debit = debit;
             this.value = value;
         }
@@ -47,7 +47,7 @@ public class Transfer {
 
     private Transfer(Builder builder) {
         this.id = builder.id;
-        this.myDate = builder.myDate;
+        this.date = builder.date;
         this.debit = builder.debit;
         this.credit = builder.credit;
         this.value = builder.value;
