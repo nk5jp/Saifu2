@@ -7,6 +7,7 @@ import android.view.View;
 
 import java.util.Calendar;
 
+import jp.nk5.saifu2.service.CreatingCostService;
 import jp.nk5.saifu2.service.CreatingTemplateService;
 import jp.nk5.saifu2.service.SearchingCostService;
 import jp.nk5.saifu2.view.fragment.CostFragment;
@@ -30,6 +31,7 @@ public class AccountBookActivity extends BaseActivity
     private CostFragment costFragment;
 
     private CreatingTemplateService creatingTemplateService;
+    private CreatingCostService creatingCostService;
     private SearchingCostService searchingCostService;
 
     private AccountBookMenu currentMenu;
@@ -74,6 +76,9 @@ public class AccountBookActivity extends BaseActivity
                     costFragment,
                     this
             );
+            creatingCostService = new CreatingCostService(this,
+                    costFragment,
+                    this);
             setScreen(currentMenu);
         } catch (Exception e) {
             super.onDestroy();
@@ -143,6 +148,19 @@ public class AccountBookActivity extends BaseActivity
     }
 
     /**
+     * テンプレートから今月の費目を作成して保存する．
+     */
+    public void onClickApplyButton(View view)
+    {
+        try {
+            creatingCostService.createCostFromTemplate(year, month);
+        } catch (Exception e) {
+            showError("Failed to Create cost.");
+        }
+
+    }
+
+    /**
      * Cost画面のSEARCHボタン押下時の処理
      * 該当する年月の費目を取得し，画面モデルの更新と表示を行う
      * @param view Cost画面上のSEARCHボタン
@@ -162,9 +180,19 @@ public class AccountBookActivity extends BaseActivity
      * @param position 長押しされた口座の行番．
      * @return 継承元のとおり．特に意味はなし．
      */
-    public boolean onItemLongClick(int position) {
+    public boolean onTemplateItemLongClick(int position) {
         int id = templateFragment.getViewModel().getTemplates().get(position).getTemplate().getId();
         creatingTemplateService.updateTemplateStatus(id);
+        return true;
+    }
+
+    public void onCostItemClick(int position)
+    {
+
+    }
+
+    public boolean onCostItemLongClick(int position)
+    {
         return true;
     }
 
@@ -172,7 +200,7 @@ public class AccountBookActivity extends BaseActivity
      * ポジションに該当するテンプレートのIDを取得し，サービスに選択処理を依頼する．
      * @param position 選択したリストの行数
      */
-    public void onItemClick(int position) {
+    public void onTemplateItemClick(int position) {
         try
         {
             creatingTemplateService.selectTemplate(position);

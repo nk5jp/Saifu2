@@ -26,8 +26,8 @@ public class TemplateFragment extends Fragment implements ListView.OnItemClickLi
     private View layout;
 
     public interface EventListener {
-        boolean onItemLongClick(int position);
-        void onItemClick(int position);
+        boolean onTemplateItemLongClick(int position);
+        void onTemplateItemClick(int position);
     }
 
     public static String getTagName()
@@ -69,12 +69,12 @@ public class TemplateFragment extends Fragment implements ListView.OnItemClickLi
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        listener.onItemClick(position);
+        listener.onTemplateItemClick(position);
     }
 
     @Override
     public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
-        return listener.onItemLongClick(position);
+        return listener.onTemplateItemLongClick(position);
     }
 
     public void updateView()

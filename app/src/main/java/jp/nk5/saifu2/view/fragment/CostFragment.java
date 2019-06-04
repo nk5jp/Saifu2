@@ -28,8 +28,8 @@ public class CostFragment extends Fragment implements ListView.OnItemClickListen
     private View layout;
 
     public interface EventListener {
-        boolean onItemLongClick(int position);
-        void onItemClick(int position);
+        boolean onCostItemLongClick(int position);
+        void onCostItemClick(int position);
     }
 
     public static String getTagName()
@@ -71,12 +71,12 @@ public class CostFragment extends Fragment implements ListView.OnItemClickListen
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        listener.onItemClick(position);
+        listener.onCostItemClick(position);
     }
 
     @Override
     public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
-        return listener.onItemLongClick(position);
+        return listener.onCostItemLongClick(position);
     }
 
     public void updateView()

@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Locale;
 
 import jp.nk5.saifu2.domain.Account;
 import jp.nk5.saifu2.domain.Cost;
@@ -36,7 +37,31 @@ public class CostListAdapter extends ArrayAdapter<Cost> {
         if (cost != null)
         {
             TextView textView = view.findViewById(android.R.id.text1);
-            textView.setText(cost.toString());
+            if (!cost.isValid()) textView.setBackgroundColor(Color.GRAY);
+            if (cost.getEstimate() == 0)
+            {
+                textView.setText(
+                        String.format(
+                                Locale.JAPAN,
+                                "%s(%d) : %,d/-",
+                                cost.getName(),
+                                cost.getDate().getFullDate(),
+                                cost.getResult()
+                        )
+                );
+            } else {
+                textView.setText(
+                        String.format(
+                                Locale.JAPAN,
+                                "%s(%d) : %,d/%,d",
+                                cost.getName(),
+                                cost.getDate().getFullDate(),
+                                cost.getResult(),
+                                cost.getEstimate()
+                        )
+                );
+                if (cost.getEstimate() < cost.getResult()) textView.setTextColor(Color.RED);
+            }
         }
         return view;
     }

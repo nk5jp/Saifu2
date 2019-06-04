@@ -43,15 +43,15 @@ public class CreatingTemplateService {
     {
         try
         {
-            if (isDuplicated(name))
-            {
-                errorListener.showError("Name is duplicated.");
-                return;
-            }
-
             int id = updateFormViewListener.getViewModel().getId();
 
             if (id == SpecificId.NotPersisted.getId()) {
+                if (isDuplicated(name))
+                {
+                    errorListener.showError("Name is duplicated.");
+                    return;
+                }
+
                 repository.setTemplate(name, isControlled);
                 updateTemplateList();
                 updateInfoViewListener.updateView();
@@ -144,6 +144,8 @@ public class CreatingTemplateService {
      */
     private void unSelectedTemplate(int id) throws Exception
     {
+        if (id == SpecificId.NotPersisted.getId()) return;
+
         Optional<TemplateViewModel.TemplateForView> templateForView
                 = updateInfoViewListener.getViewModel().getTemplates().stream()
                 .filter(t -> t.getTemplate().getId() == id)

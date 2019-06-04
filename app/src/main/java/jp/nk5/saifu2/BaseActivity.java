@@ -11,6 +11,15 @@ import android.widget.Toast;
 public abstract class BaseActivity extends AppCompatActivity {
 
     /**
+     * アクティビティに対して通常メッセージの表示を依頼する
+     * @param message 表示対象とする文字列
+     */
+    public void showMessage (String message)
+    {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
      * アクティビティに対してエラーメッセージの表示を依頼する
      * @param message 表示対象とする文字列
      */

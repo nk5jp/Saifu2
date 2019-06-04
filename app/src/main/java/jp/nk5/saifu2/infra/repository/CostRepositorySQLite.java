@@ -8,9 +8,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import jp.nk5.saifu2.domain.Cost;
-import jp.nk5.saifu2.domain.Transfer;
+import jp.nk5.saifu2.domain.NormalCost;
+import jp.nk5.saifu2.domain.UnControlledCost;
 import jp.nk5.saifu2.domain.repository.CostRepository;
 import jp.nk5.saifu2.domain.Template;
+import jp.nk5.saifu2.domain.util.MyDate;
 import jp.nk5.saifu2.domain.util.SpecificId;
 import jp.nk5.saifu2.infra.dao.CostDAO;
 import jp.nk5.saifu2.infra.dao.TemplateDAO;
@@ -81,6 +83,32 @@ public class CostRepositorySQLite implements CostRepository {
         templateDAO.updateTemplate(template);
     }
 
+    public void setCostFromTemplate(int year, int month, Template template) throws Exception
+    {
+        Cost cost;
+        int templateId = template.getId();
+        if (template.isControlled()) {
+            cost = new NormalCost(SpecificId.NotPersisted.getId(),
+                    calculateEstimate(templateId),
+                    0,
+                    true,
+                    new MyDate(year, month),
+                    template
+            );
+        } else {
+            cost = new UnControlledCost(
+                    SpecificId.NotPersisted.getId(),
+                    0,
+                    true,
+                    new MyDate(year, month),
+                    template
+            );
+        }
+        costDAO.createCost(cost);
+        costs.add(cost);
+    }
+
+
     @Override
     public List<Cost> getSpecificCost(int year, int month)
     {
@@ -89,9 +117,12 @@ public class CostRepositorySQLite implements CostRepository {
                 .collect(Collectors.toList());
     }
 
-    public int calculateEstimate(int id)
+    public int calculateEstimate(int id) throws Exception
     {
-        return 0;
+        List<Cost> latestCosts = costDAO.readByIdLatestThree(id);
+        return (int) latestCosts.stream()
+                .mapToInt(Cost::getResult)
+                .average().orElse(0);
     }
 
 

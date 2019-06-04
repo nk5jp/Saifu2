@@ -17,6 +17,12 @@ public class NormalCost extends Cost {
         this.template = template;
     }
 
+    @Override
+    public String getName()
+    {
+        return template.getName();
+    }
+
     public int getTemplateId()
     {
         return template.getId();

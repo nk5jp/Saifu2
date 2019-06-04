@@ -12,6 +12,12 @@ public class UnControlledCost extends Cost {
         this.template = template;
     }
 
+    @Override
+    public String getName()
+    {
+        return template.getName();
+    }
+
     public int getEstimate()
     {
         return 0;
