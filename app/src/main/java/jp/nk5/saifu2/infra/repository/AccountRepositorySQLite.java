@@ -38,9 +38,15 @@ public class AccountRepositorySQLite implements AccountRepository {
     {
         accountDAO = new AccountDAO(context);
         transferDAO = new TransferDAO(context, this);
+        initialize();
+    }
+
+    public void initialize() throws Exception
+    {
         accounts = accountDAO.readAll();
         transfers = transferDAO.readAll();
     }
+
 
     @Override
     public void setAccount(String name) throws Exception {

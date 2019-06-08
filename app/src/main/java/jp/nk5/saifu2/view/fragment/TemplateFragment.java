@@ -14,9 +14,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import jp.nk5.saifu2.R;
-import jp.nk5.saifu2.adapter.AccountListAdapter;
 import jp.nk5.saifu2.adapter.TemplateListAdapter;
-import jp.nk5.saifu2.view.viewmodel.AccountViewModel;
 import jp.nk5.saifu2.view.viewmodel.TemplateViewModel;
 
 public class TemplateFragment extends Fragment implements ListView.OnItemClickListener, ListView.OnItemLongClickListener {

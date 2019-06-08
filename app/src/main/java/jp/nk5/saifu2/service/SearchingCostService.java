@@ -54,6 +54,23 @@ public class SearchingCostService {
     }
 
     /**
+     * 選択された費目の有効／無効状態を更新し，表示を最新化する．
+     * @param id 更新対象の費目ID
+     * @param year 表示最新化の際の検索対象年
+     * @param month 表示最新化の際の検索対象月
+     */
+    public void updateCostStatus(int id, int year, int month)
+    {
+        try {
+            repository.validInvalidCost(id);
+            updateCostList(year, month);
+            updateViewListener.updateView();
+        } catch (Exception e) {
+            errorListener.showError(e.getMessage());
+        }
+    }
+
+    /**
      * 入力数字の桁数を検証する
      * @param date 検証対象の数字
      * @return 6桁である

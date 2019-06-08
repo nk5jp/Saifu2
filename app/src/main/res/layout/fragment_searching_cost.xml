@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/str_yyyymm"
+        android:importantForAutofill="no"
         android:inputType="number" />
 
     <Button

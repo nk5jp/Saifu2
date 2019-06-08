@@ -16,4 +16,6 @@ public interface AccountRepository {
     List<Transfer> getAllTransfer() throws Exception;
     List<Transfer> getSpecificTransfer(int year, int month) throws Exception;
     List<Account> getAllValidAccount() throws Exception;
+
+    void initialize() throws Exception;
 }

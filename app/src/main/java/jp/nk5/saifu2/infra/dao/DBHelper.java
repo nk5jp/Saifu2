@@ -45,7 +45,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String DROP_TEMPLATE_TABLE = "drop table template;";
     private static final String DROP_COST_TABLE = "drop table cost;";
 
-    static DBHelper getInstance(Context context)
+    public static DBHelper getInstance(Context context)
     {
         if (instance == null)
         {

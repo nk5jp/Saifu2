@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import jp.nk5.saifu2.domain.Cost;
+import jp.nk5.saifu2.domain.ExtraCost;
 import jp.nk5.saifu2.domain.NormalCost;
 import jp.nk5.saifu2.domain.UnControlledCost;
 import jp.nk5.saifu2.domain.repository.CostRepository;
@@ -38,6 +39,11 @@ public class CostRepositorySQLite implements CostRepository {
     {
         templateDAO = new TemplateDAO(context);
         costDAO = new CostDAO(context, this);
+        initialize();
+    }
+
+    public void initialize() throws Exception
+    {
         templates = templateDAO.readAll();
         costs = costDAO.readAll();
     }
@@ -108,6 +114,20 @@ public class CostRepositorySQLite implements CostRepository {
         costs.add(cost);
     }
 
+    public void setCostFromExtra(int year, int month, String name, int estimate) throws Exception
+    {
+        Cost cost;
+        cost = new ExtraCost(SpecificId.NotPersisted.getId(),
+                estimate,
+                0,
+                name,
+                true,
+                new MyDate(year, month)
+        );
+        costDAO.createCost(cost);
+        costs.add(cost);
+    }
+
 
     @Override
     public List<Cost> getSpecificCost(int year, int month)
@@ -117,6 +137,26 @@ public class CostRepositorySQLite implements CostRepository {
                 .collect(Collectors.toList());
     }
 
+    private Cost getCostById(int id)
+    {
+        Optional<Cost> optional = costs.stream()
+                .filter(a -> a.getId() == id)
+                .findFirst();
+        if (optional.isPresent())
+        {
+            return optional.get();
+        } else {
+            throw new NoSuchElementException();
+        }
+    }
+
+    public void validInvalidCost(int id) throws Exception
+    {
+        Cost cost = getCostById(id);
+        cost.setValid(!cost.isValid());
+        costDAO.updateCost(cost);
+    }
+
     public int calculateEstimate(int id) throws Exception
     {
         List<Cost> latestCosts = costDAO.readByIdLatestThree(id);
@@ -124,7 +164,5 @@ public class CostRepositorySQLite implements CostRepository {
                 .mapToInt(Cost::getResult)
                 .average().orElse(0);
     }
-
-
 
 }

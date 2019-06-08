@@ -14,5 +14,7 @@
     <string name="str_add_template">ADD_TEMPLATE</string>
     <string name="str_edit_template">EDIT_TEMPLATE</string>
     <string name="str_apply">APPLY</string>
+    <string name="str_add_cost">ADD_COST</string>
     <string name="str_estimate">ESTIMATE</string>
+    <string name="str_cost_name">COST_NAME</string>
 </resources>

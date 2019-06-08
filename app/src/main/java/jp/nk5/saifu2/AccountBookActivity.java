@@ -11,6 +11,7 @@ import jp.nk5.saifu2.service.CreatingCostService;
 import jp.nk5.saifu2.service.CreatingTemplateService;
 import jp.nk5.saifu2.service.SearchingCostService;
 import jp.nk5.saifu2.view.fragment.CostFragment;
+import jp.nk5.saifu2.view.fragment.CreatingCostFragment;
 import jp.nk5.saifu2.view.fragment.SearchingCostFragment;
 import jp.nk5.saifu2.view.fragment.TemplateFragment;
 import jp.nk5.saifu2.view.fragment.menu.AccountBookMenuFragment;
@@ -77,6 +78,7 @@ public class AccountBookActivity extends BaseActivity
                     this
             );
             creatingCostService = new CreatingCostService(this,
+                    searchingCostService,
                     costFragment,
                     this);
             setScreen(currentMenu);
@@ -100,6 +102,7 @@ public class AccountBookActivity extends BaseActivity
                 setCreatingTemplateScreen();
                 break;
             case EXTRA:
+                setCreatingCostScreen();
                 break;
         }
     }
@@ -133,6 +136,20 @@ public class AccountBookActivity extends BaseActivity
     }
 
     /**
+     * フラグメントの差し替えと，画面モデルの初期化を行う．
+     */
+    private void setCreatingCostScreen() throws Exception
+    {
+        searchingCostService.updateCostList(year, month);
+        fragmentManager.beginTransaction()
+                .replace(R.id.layout_menu, new AccountBookMenuFragment(), AccountBookMenuFragment.getTagName())
+                .replace(R.id.layout_form, new CreatingCostFragment(), CreatingCostFragment.getTagName())
+                .replace(R.id.layout_information, costFragment, CostFragment.getTagName())
+                .commit();
+        currentMenu = AccountBookMenu.EXTRA;
+    }
+
+    /**
      * Template画面のADD/EDIT_TEMPLATEボタン押下時の処理
      * テンプレートを作成もしくは編集し，画面モデルの更新と表示を行う．
      */
@@ -157,7 +174,6 @@ public class AccountBookActivity extends BaseActivity
         } catch (Exception e) {
             showError("Failed to Create cost.");
         }
-
     }
 
     /**
@@ -176,8 +192,24 @@ public class AccountBookActivity extends BaseActivity
     }
 
     /**
-     * 長押しされた口座を閉塞して表示をアップデートする．
-     * @param position 長押しされた口座の行番．
+     * Extra画面のADD_COSTボタン押下時の処理
+     * 指定した年月に対して追加費目を作成し，画面モデルの更新と表示を行う
+     * @param view Extra画面上のADD_COSTボタン
+     */
+    public void onClickAddCostButton(View view)
+    {
+        try {
+            String name = getStringFromEditText(R.id.editText1);
+            int estimate = getIntFromEditText(R.id.editText2);
+            creatingCostService.createCostFromExtra(year, month, name, estimate);
+        } catch (Exception e) {
+            showError("Failed to Create cost.");
+        }
+    }
+
+    /**
+     * 長押しされたテンプレートを閉塞して表示をアップデートする．
+     * @param position 長押しされたテンプレートの行番．
      * @return 継承元のとおり．特に意味はなし．
      */
     public boolean onTemplateItemLongClick(int position) {
@@ -186,13 +218,15 @@ public class AccountBookActivity extends BaseActivity
         return true;
     }
 
-    public void onCostItemClick(int position)
-    {
-
-    }
-
+    /**
+     * 長押しされた費目を閉塞して表示を更新する．
+     * @param position 長押しされた費目の行番．
+     * @return 継承元のとおり．特に意味はなし．
+     */
     public boolean onCostItemLongClick(int position)
     {
+        int id = costFragment.getViewModel().getCosts().get(position).getId();
+        searchingCostService.updateCostStatus(id, year, month);
         return true;
     }
 
@@ -207,7 +241,6 @@ public class AccountBookActivity extends BaseActivity
         } catch (Exception e) {
             showError("cannot select.");
         }
-
     }
 
 

@@ -14,14 +14,10 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import jp.nk5.saifu2.R;
-import jp.nk5.saifu2.adapter.AccountListAdapter;
 import jp.nk5.saifu2.adapter.CostListAdapter;
-import jp.nk5.saifu2.adapter.TemplateListAdapter;
-import jp.nk5.saifu2.view.viewmodel.AccountViewModel;
 import jp.nk5.saifu2.view.viewmodel.CostViewModel;
-import jp.nk5.saifu2.view.viewmodel.TemplateViewModel;
 
-public class CostFragment extends Fragment implements ListView.OnItemClickListener, ListView.OnItemLongClickListener {
+public class CostFragment extends Fragment implements ListView.OnItemLongClickListener {
 
     private EventListener listener;
     private CostViewModel viewModel = new CostViewModel(0, 0, new ArrayList<>());
@@ -29,7 +25,6 @@ public class CostFragment extends Fragment implements ListView.OnItemClickListen
 
     public interface EventListener {
         boolean onCostItemLongClick(int position);
-        void onCostItemClick(int position);
     }
 
     public static String getTagName()
@@ -47,7 +42,6 @@ public class CostFragment extends Fragment implements ListView.OnItemClickListen
         Context context = this.getContext();
         if (context != null)
         {
-            listView.setOnItemClickListener(this);
             listView.setOnItemLongClickListener(this);
         }
         return layout;
@@ -67,11 +61,6 @@ public class CostFragment extends Fragment implements ListView.OnItemClickListen
     public CostViewModel getViewModel()
     {
         return this.viewModel;
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        listener.onCostItemClick(position);
     }
 
     @Override

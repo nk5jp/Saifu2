@@ -40,6 +40,11 @@ public class CostDAO extends DAO<Cost> {
         return read("select * from cost where id = ? order by date desc limit 3;", new String[]{String.valueOf(id)});
     }
 
+    public void updateCost(Cost cost) throws Exception
+    {
+        update(cost, "cost", "id = ?", new String[]{String.valueOf(cost.getId())});
+    }
+
     @Override
     Cost transformCursorToEntity(Cursor cursor) throws Exception
     {
