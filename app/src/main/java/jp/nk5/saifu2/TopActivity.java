@@ -34,6 +34,8 @@ public class TopActivity extends BaseActivity implements TopMenuFragment.EventLi
                 startActivity(intent);
                 break;
             case SHOP:
+                intent = new Intent(this, ShopActivity.class);
+                startActivity(intent);
                 break;
             case BANK:
                 intent = new Intent(this, BankActivity.class);

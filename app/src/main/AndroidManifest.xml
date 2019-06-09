@@ -10,7 +10,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AccountBookActivity"
+        <activity android:name=".ShopActivity"></activity>
+        <activity
+            android:name=".AccountBookActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".TopActivity">
             <intent-filter>
