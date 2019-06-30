@@ -39,11 +39,25 @@ public class DBHelper extends SQLiteOpenHelper {
             "templateId integer not null, " +
             "isValid integer not null);";
 
+    private static final String CREATE_RECEIPT_TABLE = "create table receipt ( " +
+            "id integer primary key autoincrement, " +
+            "date integer not null, " +
+            "accountId integer not null, " +
+            "sum integer not null);";
+
+    private static final String CREATE_RECEIPT_DETAIL_TABLE = "create table receipt_detail ( " +
+            "id integer primary key autoincrement, " +
+            "receiptId integer not null, " +
+            "costId integer not null, " +
+            "value integer not null);";
+
 
     private static final String DROP_ACCOUNT_TABLE = "drop table account;";
     private static final String DROP_TRANSFER_TABLE = "drop table transfer;";
     private static final String DROP_TEMPLATE_TABLE = "drop table template;";
     private static final String DROP_COST_TABLE = "drop table cost;";
+    private static final String DROP_RECEIPT_TABLE = "drop table receipt;";
+    private static final String DROP_RECEIPT_DETAIL_TABLE = "drop table receipt_detail;";
 
     public static DBHelper getInstance(Context context)
     {
@@ -64,6 +78,8 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(CREATE_TRANSFER_TABLE);
         sqLiteDatabase.execSQL(CREATE_TEMPLATE_TABLE);
         sqLiteDatabase.execSQL(CREATE_COST_TABLE);
+        sqLiteDatabase.execSQL(CREATE_RECEIPT_TABLE);
+        sqLiteDatabase.execSQL(CREATE_RECEIPT_DETAIL_TABLE);
     }
 
     @Override
@@ -72,10 +88,14 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(DROP_TRANSFER_TABLE);
         sqLiteDatabase.execSQL(DROP_TEMPLATE_TABLE);
         sqLiteDatabase.execSQL(DROP_COST_TABLE);
+        sqLiteDatabase.execSQL(DROP_RECEIPT_TABLE);
+        sqLiteDatabase.execSQL(DROP_RECEIPT_DETAIL_TABLE);
         sqLiteDatabase.execSQL(CREATE_ACCOUNT_TABLE);
         sqLiteDatabase.execSQL(CREATE_TRANSFER_TABLE);
         sqLiteDatabase.execSQL(CREATE_TEMPLATE_TABLE);
         sqLiteDatabase.execSQL(CREATE_COST_TABLE);
+        sqLiteDatabase.execSQL(CREATE_RECEIPT_TABLE);
+        sqLiteDatabase.execSQL(CREATE_RECEIPT_DETAIL_TABLE);
     }
 
 }
