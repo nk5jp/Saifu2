@@ -10,10 +10,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ShopActivity"></activity>
-        <activity
-            android:name=".AccountBookActivity"
-            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".TopActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -22,8 +18,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ShopActivity" />
+        <activity
+            android:name=".AccountBookActivity"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".BankActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ReceiptActivity"
             android:windowSoftInputMode="stateHidden" />
     </application>
 

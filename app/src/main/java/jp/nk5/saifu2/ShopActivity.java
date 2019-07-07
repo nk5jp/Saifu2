@@ -1,8 +1,10 @@
 package jp.nk5.saifu2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
+import android.view.View;
 
 import jp.nk5.saifu2.view.fragment.CalendarFragment;
 import jp.nk5.saifu2.view.fragment.menu.ShopMenuFragment;
@@ -92,6 +94,12 @@ public class ShopActivity extends BaseActivity implements ShopMenuFragment.Event
     public void onItemClick(int position)
     {
 
+    }
+
+    public void onClickAddButton(View view)
+    {
+        Intent intent = new Intent(this, ReceiptActivity.class);
+        startActivity(intent);
     }
 
 
