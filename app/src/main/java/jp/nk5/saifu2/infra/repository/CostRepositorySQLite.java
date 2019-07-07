@@ -137,7 +137,8 @@ public class CostRepositorySQLite implements CostRepository {
                 .collect(Collectors.toList());
     }
 
-    private Cost getCostById(int id)
+    @Override
+    public Cost getCostById(int id)
     {
         Optional<Cost> optional = costs.stream()
                 .filter(a -> a.getId() == id)
