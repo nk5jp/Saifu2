@@ -1,12 +1,26 @@
 package jp.nk5.saifu2.view.viewmodel;
 
+import java.util.List;
+
+import jp.nk5.saifu2.domain.Account;
 import jp.nk5.saifu2.domain.Cost;
+import jp.nk5.saifu2.domain.Receipt;
+import jp.nk5.saifu2.domain.util.MyDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+@AllArgsConstructor
 public class ReceiptDetailViewModel {
 
+    @Getter @Setter
+    private int id;
+    @Getter @Setter
+    private MyDate date;
+    @Getter @Setter
+    private int sum;
+    @Getter @Setter
+    private List<ReceiptDetailForView> receiptDetails;
 
     @AllArgsConstructor
     public class ReceiptDetailForView
@@ -15,5 +29,28 @@ public class ReceiptDetailViewModel {
         private Cost cost;
         @Getter @Setter
         private int value;
+    }
+
+    /**
+     * 内部保持している明細のリストに新要素を追加する．合計値の加算も行う．
+     * @param cost 追加する明細に紐づく費目
+     * @param value 価格
+     */
+    public void addDetail(Cost cost, int value)
+    {
+        this.receiptDetails.add(
+                new ReceiptDetailForView(cost, value)
+        );
+        sum = sum + value;
+    }
+
+    /**
+     * 指定した行番号に対応づく明細を削除する．合計値の減算も行う．
+     * @param position 削除対象とする明細の行番号
+     */
+    public void deleteDetail(int position)
+    {
+        sum = sum - receiptDetails.get(position).getValue();
+        receiptDetails.remove(position);
     }
 }

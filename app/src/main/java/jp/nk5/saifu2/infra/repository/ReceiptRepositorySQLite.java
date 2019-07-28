@@ -88,7 +88,7 @@ public class ReceiptRepositorySQLite implements ReceiptRepository {
     @Override
     public List<Receipt> getReceiptsByDate(MyDate date) {
         return receipts.stream()
-                .filter(r -> r.getDate().getYear() == date.getYear() && r.getDate().getMonth() == date.getMonth())
+                .filter(r -> r.getDate().getYear() == date.getYear() && r.getDate().getMonth() == date.getMonth() && r.getDate().getDay() == date.getDay())
                 .collect(Collectors.toList());
     }
 

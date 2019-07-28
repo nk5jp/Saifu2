@@ -17,6 +17,7 @@ public interface CostRepository {
     void setCostFromExtra(int year, int month, String name, int estimate) throws Exception;
     List<Cost> getSpecificCost(int year, int month) throws Exception;
     Cost getCostById(int id) throws Exception;
+    void updateCostById(int id, int value) throws Exception;
     void validInvalidCost(int id) throws Exception;
 
     int calculateEstimate(int id) throws Exception;

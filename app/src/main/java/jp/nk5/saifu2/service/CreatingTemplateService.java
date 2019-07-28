@@ -101,7 +101,7 @@ public class CreatingTemplateService {
                 int currentSelected = updateFormViewListener.getViewModel().getId();
                 unSelectedTemplate(currentSelected);
                 templateForView.setSelected(true);
-                bindTempalate(templateForView);
+                bindTemplate(templateForView);
 
                 updateFormViewListener.updateView();
                 updateInfoViewListener.updateView();
@@ -163,7 +163,7 @@ public class CreatingTemplateService {
      * 選択したテンプレートの情報をフォーム側にバインドする
      * @param templateForView 選択したテンプレート
      */
-    private void bindTempalate(TemplateViewModel.TemplateForView templateForView)
+    private void bindTemplate(TemplateViewModel.TemplateForView templateForView)
     {
         updateFormViewListener.getViewModel().setId(templateForView.getTemplate().getId());
         updateFormViewListener.getViewModel().setName(templateForView.getTemplate().getName());

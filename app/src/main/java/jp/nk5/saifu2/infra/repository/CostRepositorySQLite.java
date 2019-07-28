@@ -151,6 +151,13 @@ public class CostRepositorySQLite implements CostRepository {
         }
     }
 
+    public void updateCostById(int id, int value) throws Exception
+    {
+        Cost cost = getCostById(id);
+        cost.setResult(cost.getResult() + value);
+        costDAO.updateCost(cost);
+    }
+
     public void validInvalidCost(int id) throws Exception
     {
         Cost cost = getCostById(id);

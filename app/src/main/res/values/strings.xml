@@ -17,4 +17,8 @@
     <string name="str_add_cost">ADD_COST</string>
     <string name="str_estimate">ESTIMATE</string>
     <string name="str_cost_name">COST_NAME</string>
+    <string name="str_add_receipt">ADD_RECEIPT</string>
+    <string name="str_add_detail">ADD_DETAIL</string>
+    <string name="str_value">VALUE</string>
+    <string name="str_sum">SUM</string>
 </resources>

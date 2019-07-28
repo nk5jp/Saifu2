@@ -11,13 +11,13 @@ import android.widget.TextView;
 import java.util.List;
 import java.util.Locale;
 
-import jp.nk5.saifu2.domain.Receipt;
+import jp.nk5.saifu2.view.viewmodel.ReceiptDetailViewModel;
 
-public class ReceiptListAdapter extends ArrayAdapter<Receipt> {
+public class ReceiptDetailListAdapter extends ArrayAdapter<ReceiptDetailViewModel.ReceiptDetailForView> {
 
     private LayoutInflater layoutInflater;
 
-    public ReceiptListAdapter(@NonNull Context context, int resource, @NonNull List<Receipt> objects) {
+    public ReceiptDetailListAdapter(@NonNull Context context, int resource, @NonNull List<ReceiptDetailViewModel.ReceiptDetailForView> objects) {
         super(context, resource, objects);
         this.layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -31,12 +31,12 @@ public class ReceiptListAdapter extends ArrayAdapter<Receipt> {
             view = layoutInflater.inflate(android.R.layout.simple_list_item_1, null);
         }
 
-        Receipt receipt = getItem(position);
-        if (receipt != null)
+        ReceiptDetailViewModel.ReceiptDetailForView detail = getItem(position);
+        if (detail != null)
         {
             TextView textView = view.findViewById(android.R.id.text1);
             textView.setText(
-                    String.format(Locale.JAPAN, "%s : %,d円", receipt.getAccount().getName(), receipt.getSum())
+                    String.format(Locale.JAPAN, "%s：%,d円", detail.getCost().getName(), detail.getValue())
             );
         }
         return view;

@@ -8,23 +8,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CalendarView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import jp.nk5.saifu2.R;
 import jp.nk5.saifu2.adapter.ReceiptListAdapter;
 import jp.nk5.saifu2.domain.util.MyDate;
 import jp.nk5.saifu2.view.viewmodel.CalendarViewModel;
 
-public class CalendarFragment extends Fragment implements ListView.OnItemClickListener {
+public class CalendarFragment extends Fragment implements ListView.OnItemClickListener, CalendarView.OnDateChangeListener {
 
     private EventListener listener;
-    private CalendarViewModel viewModel = new CalendarViewModel(new MyDate(1, 1), new ArrayList<>());
+    private CalendarViewModel viewModel = new CalendarViewModel(null, new ArrayList<>());
     private View layout;
 
     public interface EventListener {
         void onItemClick(int position);
+        void onSelectedDayChange(int year, int month, int day);
     }
 
     public static String getTagName()
@@ -32,6 +35,13 @@ public class CalendarFragment extends Fragment implements ListView.OnItemClickLi
         return "TAG_CALENDAR";
     }
 
+    /**
+     * 本日日付で画面モデルを初期化し，画面表示を更新する
+     * @param inflater 継承元の引数
+     * @param container 継承元の引数
+     * @param savedInstanceState 継承元の引数
+     * @return 作成されたビュー
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container  , Bundle savedInstanceState)
     {
@@ -39,10 +49,12 @@ public class CalendarFragment extends Fragment implements ListView.OnItemClickLi
         updateView();
 
         ListView listView = layout.findViewById(R.id.listView1);
+        CalendarView calendarView = layout.findViewById(R.id.calendarView1);
         Context context = this.getContext();
         if (context != null)
         {
             listView.setOnItemClickListener(this);
+            calendarView.setOnDateChangeListener(this);
         }
         return layout;
     }
@@ -66,6 +78,11 @@ public class CalendarFragment extends Fragment implements ListView.OnItemClickLi
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         listener.onItemClick(position);
+    }
+
+    @Override
+    public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int day) {
+        listener.onSelectedDayChange(year, month + 1, day);
     }
 
     public void updateView()
