@@ -7,6 +7,8 @@ import java.util.List;
 import jp.nk5.saifu2.ReceiptActivity;
 import jp.nk5.saifu2.domain.Account;
 import jp.nk5.saifu2.domain.Cost;
+import jp.nk5.saifu2.domain.Receipt;
+import jp.nk5.saifu2.domain.ReceiptDetail;
 import jp.nk5.saifu2.domain.repository.AccountRepository;
 import jp.nk5.saifu2.domain.repository.CostRepository;
 import jp.nk5.saifu2.domain.repository.ReceiptRepository;
@@ -83,4 +85,26 @@ public class CreatingReceiptService {
         accountRepository.depositMoney(account.getId(), -sum);
         return account.getBalance();
     }
+
+    public Receipt getReceiptById(int id) throws Exception
+    {
+        return receiptRepository.getReceiptById(id);
+    }
+
+    public List<ReceiptDetail> getReceiptDetailById(int id) throws Exception
+    {
+        return receiptRepository.getReceiptDetailsByReceiptId(id);
+    }
+
+    public void deleteReceipt(int id) throws Exception
+    {
+        accountRepository.depositMoney(receiptRepository.getReceiptById(id).getAccount().getId(), receiptRepository.getReceiptById(id).getSum());
+        for (ReceiptDetail detail : receiptRepository.getReceiptDetailsByReceiptId(id))
+        {
+            costRepository.updateCostById(detail.getCost().getId(), - detail.getValue());
+        }
+        receiptRepository.deleteReceipt(id);
+    }
+
+
 }

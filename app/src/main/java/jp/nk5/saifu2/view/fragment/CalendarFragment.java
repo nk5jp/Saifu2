@@ -12,11 +12,9 @@ import android.widget.CalendarView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import jp.nk5.saifu2.R;
 import jp.nk5.saifu2.adapter.ReceiptListAdapter;
-import jp.nk5.saifu2.domain.util.MyDate;
 import jp.nk5.saifu2.view.viewmodel.CalendarViewModel;
 
 public class CalendarFragment extends Fragment implements ListView.OnItemClickListener, CalendarView.OnDateChangeListener {

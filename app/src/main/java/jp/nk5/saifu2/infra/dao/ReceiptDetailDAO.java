@@ -28,12 +28,12 @@ public class ReceiptDetailDAO extends DAO<ReceiptDetail> {
 
     public List<ReceiptDetail> readByReceiptId(int receiptId) throws Exception
     {
-        return read("select * from receipt_detail whrere receiptId = ?;", new String[]{String.valueOf(receiptId)});
+        return read("select * from receipt_detail where receiptId = ?;", new String[]{String.valueOf(receiptId)});
     }
 
     public void deleteReceiptDetailsByReceiptId(int receiptId) throws Exception
     {
-        delete("receiptDetail", "receiptId = ?", new String[]{String.valueOf(receiptId)});
+        delete("receipt_detail", "receiptId = ?", new String[]{String.valueOf(receiptId)});
     }
 
     @Override

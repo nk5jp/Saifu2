@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import jp.nk5.saifu2.adapter.AccountSpinnerAdapter;
@@ -18,6 +20,8 @@ import jp.nk5.saifu2.adapter.CostSpinnerAdapter;
 import jp.nk5.saifu2.adapter.ReceiptDetailListAdapter;
 import jp.nk5.saifu2.domain.Account;
 import jp.nk5.saifu2.domain.Cost;
+import jp.nk5.saifu2.domain.Receipt;
+import jp.nk5.saifu2.domain.ReceiptDetail;
 import jp.nk5.saifu2.domain.util.MyDate;
 import jp.nk5.saifu2.domain.util.SpecificId;
 import jp.nk5.saifu2.service.CreatingReceiptService;
@@ -54,20 +58,28 @@ public class ReceiptActivity extends BaseActivity implements ListView.OnItemLong
         int year = intent.getIntExtra("year", 0);
         int month = intent.getIntExtra("month", 0);
         int day = intent.getIntExtra("day", 0);
+        int id = intent.getIntExtra("id", SpecificId.NotPersisted.getId());
 
         if (year * month * day == 0) super.onDestroy();
 
+        ReceiptDetailViewModel.MyMode myMode;
+        if (id == SpecificId.NotPersisted.getId()) myMode = ReceiptDetailViewModel.MyMode.ADD;
+        else myMode = ReceiptDetailViewModel.MyMode.DELETE;
+
         viewModel = new ReceiptDetailViewModel(
-                SpecificId.NotPersisted.getId(),
+                id,
                 new MyDate(year,month,day),
                 0,
-                new ArrayList<>()
+                new ArrayList<>(),
+                myMode
         );
 
         try {
-            ListView listView = findViewById(R.id.listView1);
-            listView.setOnItemLongClickListener(this);
-            listView.setOnItemClickListener(this);
+            if (viewModel.getMode() == ReceiptDetailViewModel.MyMode.ADD) {
+                ListView listView = findViewById(R.id.listView1);
+                listView.setOnItemLongClickListener(this);
+                listView.setOnItemClickListener(this);
+            }
             creatingReceiptService = new CreatingReceiptService(this, this);
             setScreen();
         } catch (Exception e) {
@@ -81,16 +93,43 @@ public class ReceiptActivity extends BaseActivity implements ListView.OnItemLong
      */
     private void setScreen() throws Exception
     {
-        Spinner costSpinner = findViewById(R.id.spinner2);
-        costSpinner.setAdapter(
-                new CostSpinnerAdapter(
-                    this,
-                        android.R.layout.simple_spinner_dropdown_item,
-                        creatingReceiptService.getValidCost(viewModel.getDate().getYear(), viewModel.getDate().getMonth())
-                )
-        );
         Spinner accountSpinner = findViewById(R.id.spinner1);
-        accountSpinner.setAdapter(new AccountSpinnerAdapter(this, android.R.layout.simple_spinner_dropdown_item, creatingReceiptService.getAllValidAccount()));
+        Spinner costSpinner = findViewById(R.id.spinner2);
+        ListView listView = findViewById(R.id.listView1);
+        TextView textView = findViewById(R.id.textView1);
+        Button button = findViewById(R.id.button2);
+        switch (viewModel.getMode()) {
+            case ADD:
+                costSpinner.setAdapter(
+                        new CostSpinnerAdapter(
+                                this,
+                                android.R.layout.simple_spinner_dropdown_item,
+                                creatingReceiptService.getValidCost(viewModel.getDate().getYear(), viewModel.getDate().getMonth())
+                        )
+                );
+                accountSpinner.setAdapter(new AccountSpinnerAdapter(this, android.R.layout.simple_spinner_dropdown_item, creatingReceiptService.getAllValidAccount()));
+                break;
+            case DELETE:
+                Receipt receipt = creatingReceiptService.getReceiptById(viewModel.getId());
+                List<ReceiptDetail> details = creatingReceiptService.getReceiptDetailById(viewModel.getId());
+                for (ReceiptDetail detail : details)
+                {
+                    viewModel.addDetail(detail.getCost(), detail.getValue());
+                }
+
+                List<Account> accounts = new ArrayList<>();
+                accounts.add(receipt.getAccount());
+                accountSpinner.setAdapter(
+                        new AccountSpinnerAdapter(
+                                this,
+                                android.R.layout.simple_spinner_dropdown_item,
+                                accounts
+                        )
+                );
+                listView.setAdapter(new ReceiptDetailListAdapter(this, android.R.layout.simple_list_item_1, viewModel.getReceiptDetails()));
+                textView.setText(String.format(Locale.JAPAN, "SUM: %,d円", viewModel.getSum()));
+                button.setText(R.string.str_delete);
+        }
     }
 
     /**
@@ -117,20 +156,26 @@ public class ReceiptActivity extends BaseActivity implements ListView.OnItemLong
     public void onClickAddReceiptButton(View view)
     {
         try {
-            Spinner accountSpinner = findViewById(R.id.spinner1);
-            Account account = (Account) accountSpinner.getSelectedItem();
-            int before = account.getBalance();
-            int after = creatingReceiptService.createReceipt(account);
+            switch (viewModel.getMode()) {
+                case ADD:
+                    Spinner accountSpinner = findViewById(R.id.spinner1);
+                    Account account = (Account) accountSpinner.getSelectedItem();
+                    int before = account.getBalance();
+                    int after = creatingReceiptService.createReceipt(account);
 
-            new AlertDialog.Builder(this)
-                    .setTitle("Result")
-                    .setMessage(String.format(Locale.JAPAN, "%s : %,d -> %,d", account.getName(), before, after))
-                    .setPositiveButton("OK", null)
-                    .show();
+                    new AlertDialog.Builder(this)
+                            .setTitle("Result")
+                            .setMessage(String.format(Locale.JAPAN, "%s : %,d -> %,d", account.getName(), before, after))
+                            .setPositiveButton("OK", null)
+                            .show();
+                    break;
+                case DELETE:
+                    creatingReceiptService.deleteReceipt(viewModel.getId());
+            }
         } catch (Exception e) {
             showError("cannot create receipt.");
         }
-
+        finish();
     }
 
     /**

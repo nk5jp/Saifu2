@@ -7,6 +7,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 
 import jp.nk5.saifu2.domain.util.MyDate;
+import jp.nk5.saifu2.domain.util.SpecificId;
 import jp.nk5.saifu2.service.SearchingReceiptService;
 import jp.nk5.saifu2.view.fragment.CalendarFragment;
 import jp.nk5.saifu2.view.fragment.menu.ShopMenuFragment;
@@ -39,10 +40,25 @@ public class ShopActivity extends BaseActivity implements ShopMenuFragment.Event
                     calendarFragment,
                     this
             );
+        } catch (Exception e) {
+            super.onDestroy();
+        }
+    }
+
+    /**
+     * レシート明細画面から戻ってきたときの描画処理
+     */
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+
+        try {
             setScreen(currentMenu);
         } catch (Exception e) {
             super.onDestroy();
         }
+
     }
 
     /**
@@ -73,6 +89,7 @@ public class ShopActivity extends BaseActivity implements ShopMenuFragment.Event
                 .replace(R.id.layout_menu, new ShopMenuFragment(), ShopMenuFragment.getTagName())
                 .replace(R.id.layout_main, calendarFragment, CalendarFragment.getTagName())
                 .commit();
+        calendarFragment.updateView();
         currentMenu = ShopMenu.CALENDAR;
     }
 
@@ -93,11 +110,21 @@ public class ShopActivity extends BaseActivity implements ShopMenuFragment.Event
 
     public void onItemClick(int position)
     {
-
+        MyDate date = searchingReceiptService.getSelectedDate();
+        Intent intent = new Intent(this, ReceiptActivity.class);
+        intent.putExtra("year", date.getYear());
+        intent.putExtra("month", date.getMonth());
+        intent.putExtra("day", date.getDay());
+        intent.putExtra("id", calendarFragment.getViewModel().getReceipts().get(position).getId());
+        startActivity(intent);
     }
 
 
-
+    /**
+     * 現在選択している日付をintentに格納してレシート詳細画面を起動する．
+     * 作成モードなのでIDにはnotPersistedをセットする．
+     * @param view 未使用
+     */
     public void onClickAddButton(View view)
     {
         MyDate date = searchingReceiptService.getSelectedDate();
@@ -105,6 +132,7 @@ public class ShopActivity extends BaseActivity implements ShopMenuFragment.Event
         intent.putExtra("year", date.getYear());
         intent.putExtra("month", date.getMonth());
         intent.putExtra("day", date.getDay());
+        intent.putExtra("id", SpecificId.NotPersisted.getId());
         startActivity(intent);
     }
 

@@ -2,9 +2,7 @@ package jp.nk5.saifu2.view.viewmodel;
 
 import java.util.List;
 
-import jp.nk5.saifu2.domain.Account;
 import jp.nk5.saifu2.domain.Cost;
-import jp.nk5.saifu2.domain.Receipt;
 import jp.nk5.saifu2.domain.util.MyDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,6 +19,8 @@ public class ReceiptDetailViewModel {
     private int sum;
     @Getter @Setter
     private List<ReceiptDetailForView> receiptDetails;
+    @Getter @Setter
+    private MyMode mode;
 
     @AllArgsConstructor
     public class ReceiptDetailForView
@@ -29,6 +29,11 @@ public class ReceiptDetailViewModel {
         private Cost cost;
         @Getter @Setter
         private int value;
+    }
+
+    public enum MyMode
+    {
+        ADD, DELETE
     }
 
     /**
