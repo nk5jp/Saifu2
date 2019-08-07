@@ -54,9 +54,9 @@ public class CreatingReceiptService {
         updateViewListener.updateView();
     }
 
-    public List<Cost> getValidCost(int year, int month) throws Exception
+    public List<Cost> getValidCost() throws Exception
     {
-        return costRepository.getSpecificCost(year, month);
+        return costRepository.getValidCost();
     }
 
     public List<Account> getAllValidAccount() throws Exception
@@ -105,6 +105,42 @@ public class CreatingReceiptService {
         }
         receiptRepository.deleteReceipt(id);
     }
+
+    public void selectDetail(int id)
+    {
+        ReceiptDetailViewModel.ReceiptDetailForView detail = updateViewListener.getViewModel().getReceiptDetails().get(id);
+        detail.setSelected(!detail.isSelected());
+        updateViewListener.updateView();
+    }
+
+    /**
+     * 選択されている項目に対して消費税を適用する
+     * 費目ごとに消費税を計算して税込価格に変更する．
+     * ただし消費税は本来総額に発生するので，差額が発生し得る．それは適当な費目に全額追加する．
+     * 描画上はこの計算が完了した時点で選択を解除する
+     * @param rate 消費税率の整数値，例えば8%の場合は8
+     */
+    public void calculateTax(int rate)
+    {
+        List<ReceiptDetailViewModel.ReceiptDetailForView> details = updateViewListener.getViewModel().getValidDetail();
+        if (details.size() == 0) return;
+
+        int sum = details.stream().mapToInt(ReceiptDetailViewModel.ReceiptDetailForView::getValue).sum();
+        int tax = sum * rate / 100;
+        sum = sum + tax;
+        updateViewListener.getViewModel().setSum(updateViewListener.getViewModel().getSum() + tax);
+
+        for (ReceiptDetailViewModel.ReceiptDetailForView detail : details)
+        {
+            int includedPrice = detail.getValue() * (100 + rate) / 100;
+            detail.setValue(includedPrice);
+            sum -= includedPrice;
+            detail.setSelected(false);
+        }
+        details.get(0).setValue(details.get(0).getValue() + sum);
+        updateViewListener.updateView();
+    }
+
 
 
 }

@@ -138,6 +138,14 @@ public class CostRepositorySQLite implements CostRepository {
     }
 
     @Override
+    public List<Cost> getValidCost()
+    {
+        return costs.stream()
+                .filter(Cost::isValid)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public Cost getCostById(int id)
     {
         Optional<Cost> optional = costs.stream()

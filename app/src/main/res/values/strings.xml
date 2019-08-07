@@ -22,4 +22,5 @@
     <string name="str_value">VALUE</string>
     <string name="str_sum">SUM</string>
     <string name="str_delete">DELETE</string>
+    <string name="str_tax">TAX</string>
 </resources>

@@ -1,5 +1,6 @@
 package jp.nk5.saifu2.view.viewmodel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jp.nk5.saifu2.domain.Cost;
@@ -29,6 +30,8 @@ public class ReceiptDetailViewModel {
         private Cost cost;
         @Getter @Setter
         private int value;
+        @Getter @Setter
+        private boolean isSelected;
     }
 
     public enum MyMode
@@ -44,7 +47,7 @@ public class ReceiptDetailViewModel {
     public void addDetail(Cost cost, int value)
     {
         this.receiptDetails.add(
-                new ReceiptDetailForView(cost, value)
+                new ReceiptDetailForView(cost, value, false)
         );
         sum = sum + value;
     }
@@ -58,4 +61,19 @@ public class ReceiptDetailViewModel {
         sum = sum - receiptDetails.get(position).getValue();
         receiptDetails.remove(position);
     }
+
+    /**
+     * 選択されている明細のみを抽出して返す
+     * @return 選択されている明細のリスト
+     */
+    public List<ReceiptDetailForView> getValidDetail()
+    {
+        List<ReceiptDetailForView> list = new ArrayList<>();
+        for (ReceiptDetailForView detail : receiptDetails)
+        {
+            if (detail.isSelected()) list.add(detail);
+        }
+        return list;
+    }
+
 }

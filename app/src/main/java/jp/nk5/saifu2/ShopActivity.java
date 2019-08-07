@@ -74,8 +74,6 @@ public class ShopActivity extends BaseActivity implements ShopMenuFragment.Event
                 break;
             case STATISTICS:
                 break;
-            case TAX:
-                break;
         }
     }
 

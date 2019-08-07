@@ -16,6 +16,7 @@ public interface CostRepository {
     void setCostFromTemplate(int year, int month, Template template) throws Exception;
     void setCostFromExtra(int year, int month, String name, int estimate) throws Exception;
     List<Cost> getSpecificCost(int year, int month) throws Exception;
+    List<Cost> getValidCost() throws Exception;
     Cost getCostById(int id) throws Exception;
     void updateCostById(int id, int value) throws Exception;
     void validInvalidCost(int id) throws Exception;

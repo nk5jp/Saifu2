@@ -104,7 +104,7 @@ public class ReceiptActivity extends BaseActivity implements ListView.OnItemLong
                         new CostSpinnerAdapter(
                                 this,
                                 android.R.layout.simple_spinner_dropdown_item,
-                                creatingReceiptService.getValidCost(viewModel.getDate().getYear(), viewModel.getDate().getMonth())
+                                creatingReceiptService.getValidCost()
                         )
                 );
                 accountSpinner.setAdapter(new AccountSpinnerAdapter(this, android.R.layout.simple_spinner_dropdown_item, creatingReceiptService.getAllValidAccount()));
@@ -133,18 +133,20 @@ public class ReceiptActivity extends BaseActivity implements ListView.OnItemLong
     }
 
     /**
-     * 入力内容を踏まえて明細を追加する
+     * 入力内容を踏まえて明細を追加する，ADDモード時のみ有効．
      * @param view 使用しない
      */
     public void onClickAddDetailButton(View view)
     {
-        try {
-            int value = getIntFromEditText(R.id.editText1);
-            Spinner costSpinner = findViewById(R.id.spinner2);
-            Cost cost = (Cost) costSpinner.getSelectedItem();
-            creatingReceiptService.addDetail(cost, value);
-        } catch (Exception e) {
-            showError("cannot create detail.");
+        if (viewModel.getMode() == ReceiptDetailViewModel.MyMode.ADD) {
+            try {
+                int value = getIntFromEditText(R.id.editText1);
+                Spinner costSpinner = findViewById(R.id.spinner2);
+                Cost cost = (Cost) costSpinner.getSelectedItem();
+                creatingReceiptService.addDetail(cost, value);
+            } catch (Exception e) {
+                showError("cannot create detail.");
+            }
         }
     }
 
@@ -167,15 +169,19 @@ public class ReceiptActivity extends BaseActivity implements ListView.OnItemLong
                             .setTitle("Result")
                             .setMessage(String.format(Locale.JAPAN, "%s : %,d -> %,d", account.getName(), before, after))
                             .setPositiveButton("OK", null)
+                            .setOnDismissListener(
+                                    (dialog) ->  finish()
+                            )
                             .show();
                     break;
                 case DELETE:
                     creatingReceiptService.deleteReceipt(viewModel.getId());
+                    finish();
             }
         } catch (Exception e) {
             showError("cannot create receipt.");
+            finish();
         }
-        finish();
     }
 
     /**
@@ -196,7 +202,9 @@ public class ReceiptActivity extends BaseActivity implements ListView.OnItemLong
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        if (viewModel.getMode() == ReceiptDetailViewModel.MyMode.ADD) {
+            creatingReceiptService.selectDetail(position);
+        }
     }
 
     @Override
@@ -204,4 +212,14 @@ public class ReceiptActivity extends BaseActivity implements ListView.OnItemLong
         creatingReceiptService.deleteDetail(position);
         return true;
     }
+
+    public void onClickTaxButton(View view)
+    {
+        if (viewModel.getMode() == ReceiptDetailViewModel.MyMode.ADD) {
+            Spinner taxSpinner = findViewById(R.id.spinner3);
+            int taxRate = Integer.parseInt((String) taxSpinner.getSelectedItem());
+            creatingReceiptService.calculateTax(taxRate);
+        }
+    }
+
 }

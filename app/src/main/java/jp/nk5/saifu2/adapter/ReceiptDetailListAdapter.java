@@ -1,6 +1,7 @@
 package jp.nk5.saifu2.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +39,7 @@ public class ReceiptDetailListAdapter extends ArrayAdapter<ReceiptDetailViewMode
             textView.setText(
                     String.format(Locale.JAPAN, "%s：%,d円", detail.getCost().getName(), detail.getValue())
             );
+            if (detail.isSelected()) textView.setBackgroundColor(Color.YELLOW);
         }
         return view;
     }

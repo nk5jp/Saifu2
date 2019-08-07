@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Locale;
 
 import jp.nk5.saifu2.domain.Cost;
 
@@ -34,7 +35,7 @@ public class CostSpinnerAdapter extends ArrayAdapter<Cost> {
         if (cost != null)
         {
             TextView textView = view.findViewById(android.R.id.text1);
-            textView.setText(cost.getName());
+            textView.setText(String.format(Locale.JAPAN, "%s (%s)", cost.getName(), cost.getDate().getFullDateWithFormat()));
         }
         return view;
     }
@@ -48,9 +49,8 @@ public class CostSpinnerAdapter extends ArrayAdapter<Cost> {
 
         Cost cost = getItem(position);
         if (cost != null) {
-            String name = cost.getName();
             TextView view = convertView.findViewById(android.R.id.text1);
-            view.setText(name);
+            view.setText(String.format(Locale.JAPAN, "%s (%s)", cost.getName(), cost.getDate().getFullDateWithFormat()));
         }
 
         return convertView;

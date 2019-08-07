@@ -1,7 +1,7 @@
 package jp.nk5.saifu2.view.viewmodel.menu;
 
 public enum ShopMenu implements Menu {
-    CALENDAR("CALENDAR"), STATISTICS("STATISTICS"), TAX("TAX");
+    CALENDAR("CALENDAR"), STATISTICS("STATISTICS");
 
     private String name;
 
