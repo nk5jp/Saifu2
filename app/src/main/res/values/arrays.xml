@@ -4,4 +4,8 @@
         <item>8</item>
         <item>10</item>
     </string-array>
+    <string-array name="array_shortcut">
+        <item>Shop</item>
+        <item>Transfer</item>
+    </string-array>
 </resources>

@@ -51,6 +51,14 @@ public class DBHelper extends SQLiteOpenHelper {
             "costId integer not null, " +
             "value integer not null);";
 
+    private static final String CREATE_SHORTCUT_TABLE = "create table shortcut ( " +
+            "id integer primary key autoincrement, " +
+            "name text not null," +
+            "boxId integer not null, " +
+            "typeId integer not null, " +
+            "firstId integer not null, " +
+            "secondId integer not null, " +
+            "value integer not null);";
 
     private static final String DROP_ACCOUNT_TABLE = "drop table account;";
     private static final String DROP_TRANSFER_TABLE = "drop table transfer;";
@@ -58,6 +66,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String DROP_COST_TABLE = "drop table cost;";
     private static final String DROP_RECEIPT_TABLE = "drop table receipt;";
     private static final String DROP_RECEIPT_DETAIL_TABLE = "drop table receipt_detail;";
+    private static final String DROP_SHORTCUT_TABLE = "drop table shortcut;";
 
     public static DBHelper getInstance(Context context)
     {
@@ -80,6 +89,7 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(CREATE_COST_TABLE);
         sqLiteDatabase.execSQL(CREATE_RECEIPT_TABLE);
         sqLiteDatabase.execSQL(CREATE_RECEIPT_DETAIL_TABLE);
+        sqLiteDatabase.execSQL(CREATE_SHORTCUT_TABLE);
     }
 
     @Override
@@ -90,12 +100,14 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(DROP_COST_TABLE);
         sqLiteDatabase.execSQL(DROP_RECEIPT_TABLE);
         sqLiteDatabase.execSQL(DROP_RECEIPT_DETAIL_TABLE);
+        sqLiteDatabase.execSQL(DROP_SHORTCUT_TABLE);
         sqLiteDatabase.execSQL(CREATE_ACCOUNT_TABLE);
         sqLiteDatabase.execSQL(CREATE_TRANSFER_TABLE);
         sqLiteDatabase.execSQL(CREATE_TEMPLATE_TABLE);
         sqLiteDatabase.execSQL(CREATE_COST_TABLE);
         sqLiteDatabase.execSQL(CREATE_RECEIPT_TABLE);
         sqLiteDatabase.execSQL(CREATE_RECEIPT_DETAIL_TABLE);
+        sqLiteDatabase.execSQL(CREATE_SHORTCUT_TABLE);
     }
 
 }

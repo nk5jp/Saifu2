@@ -1,7 +1,7 @@
 package jp.nk5.saifu2.view.viewmodel.menu;
 
 public enum TopMenu implements Menu {
-    SHOP("SHOP"), BANK("BANK"), ACCOUNT_BOOK("ACCOUNT_BOOK");
+    SHOP("SHOP"), BANK("BANK"), ACCOUNT_BOOK("BOOK");
 
     private String name;
 
