@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="array_tax">
+        <item>8</item>
+        <item>10</item>
+    </string-array>
+    <string-array name="array_shortcut">
+        <item>Shop</item>
+        <item>Transfer</item>
+    </string-array>
+</resources>

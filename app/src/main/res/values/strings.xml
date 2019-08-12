@@ -1,3 +1,28 @@
 <resources>
     <string name="app_name">Saifu2</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="str_add">ADD</string>
+    <string name="str_account_name">ACCOUNT_NAME</string>
+    <string name="str_transfer">TRANSFER</string>
+    <string name="str_image">IMAGE</string>
+    <string name="str_reset">RESET</string>
+    <string name="str_search">SEARCH</string>
+    <string name="str_yyyymm">YYYYMM</string>
+    <string name="str_template_name">TEMPLATE_NAME</string>
+    <string name="str_add_template">ADD_TEMPLATE</string>
+    <string name="str_edit_template">EDIT_TEMPLATE</string>
+    <string name="str_apply">APPLY</string>
+    <string name="str_add_cost">ADD_COST</string>
+    <string name="str_estimate">ESTIMATE</string>
+    <string name="str_cost_name">COST_NAME</string>
+    <string name="str_add_receipt">ADD_RECEIPT</string>
+    <string name="str_add_detail">ADD_DETAIL</string>
+    <string name="str_value">VALUE</string>
+    <string name="str_sum">SUM</string>
+    <string name="str_delete">DELETE</string>
+    <string name="str_tax">TAX</string>
+    <string name="str_not_registered">NOT_REGISTERED</string>
+    <string name="str_name">NAME</string>
 </resources>
