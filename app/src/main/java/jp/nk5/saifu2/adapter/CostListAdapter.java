@@ -43,7 +43,7 @@ public class CostListAdapter extends ArrayAdapter<Cost> {
                 textView.setText(
                         String.format(
                                 Locale.JAPAN,
-                                "%s(%d) : %,d/-",
+                                "%s(%d) : %,d円 / -",
                                 cost.getName(),
                                 cost.getDate().getFullDate(),
                                 cost.getResult()
@@ -53,7 +53,7 @@ public class CostListAdapter extends ArrayAdapter<Cost> {
                 textView.setText(
                         String.format(
                                 Locale.JAPAN,
-                                "%s(%d) : %,d/%,d",
+                                "%s(%d) : %,d円 / %,d円",
                                 cost.getName(),
                                 cost.getDate().getFullDate(),
                                 cost.getResult(),

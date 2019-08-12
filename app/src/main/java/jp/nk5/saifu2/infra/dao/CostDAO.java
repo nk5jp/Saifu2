@@ -37,7 +37,7 @@ public class CostDAO extends DAO<Cost> {
 
     public List<Cost> readByIdLatestThree(int id) throws Exception
     {
-        return read("select * from cost where id = ? order by date desc limit 3;", new String[]{String.valueOf(id)});
+        return read("select * from cost where templateId = ? order by date desc limit 3;", new String[]{String.valueOf(id)});
     }
 
     public void updateCost(Cost cost) throws Exception
