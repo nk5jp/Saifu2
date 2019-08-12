@@ -10,8 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import jp.nk5.saifu2.R;
 import jp.nk5.saifu2.adapter.CostListAdapter;
@@ -72,6 +74,8 @@ public class CostFragment extends Fragment implements ListView.OnItemLongClickLi
     {
         Context context = this.getContext();
         if (context != null) {
+            TextView textView = layout.findViewById(R.id.textView1);
+            textView.setText(String.format(Locale.JAPAN, "%,d円 / %,d円", viewModel.getTotalResult(), viewModel.getTotalExpected()));
             ListView listView = layout.findViewById(R.id.listView1);
             listView.setAdapter(new CostListAdapter(context, android.R.layout.simple_list_item_1, viewModel.getCosts()));
         }

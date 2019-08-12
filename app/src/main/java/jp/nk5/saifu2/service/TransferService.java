@@ -94,6 +94,7 @@ public class TransferService {
             resetTransferAccount();
             AccountViewModel infoViewModel = updateInfoViewListener.getViewModel();
             infoViewModel.setAccounts(accountRepository.getAllAccount());
+            infoViewModel.setSum(accountRepository.getAllAccount().stream().mapToInt(Account::getBalance).sum());
             updateInfoViewListener.updateView();
         } catch (Exception e) {
             errorListener.showError(e.getMessage());

@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 import jp.nk5.saifu2.R;
 import jp.nk5.saifu2.domain.Shortcut;
 import jp.nk5.saifu2.domain.util.SpecificId;
@@ -118,9 +120,9 @@ public class TopFragment extends Fragment implements TextView.OnClickListener, T
                     textView.setText(R.string.str_not_registered);
                     textView.setBackgroundColor(Color.GRAY);
                 } else {
-                    textView.setText(shortcut.getName());
-                    if (shortcut.getTypeId() == SpecificId.Shop.getId()) textView.setBackgroundColor(Color.CYAN);
-                    if (shortcut.getTypeId() == SpecificId.Transfer.getId()) textView.setBackgroundColor(Color.YELLOW);
+                    textView.setText(String.format(Locale.JAPAN, "%s (%,d円)", shortcut.getName(), shortcut.getValue()));
+                    if (shortcut.getTypeId() == SpecificId.Shop.getId()) textView.setBackgroundColor(Color.rgb(204, 255, 255));
+                    if (shortcut.getTypeId() == SpecificId.Transfer.getId()) textView.setBackgroundColor(Color.rgb(255, 255, 204));
                 }
             }
         }

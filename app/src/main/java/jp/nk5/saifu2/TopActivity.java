@@ -1,10 +1,13 @@
 package jp.nk5.saifu2;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.widget.Toast;
 
+import java.util.Locale;
+
+import jp.nk5.saifu2.domain.Account;
 import jp.nk5.saifu2.service.ExecutingShortcutService;
 import jp.nk5.saifu2.view.fragment.TopFragment;
 import jp.nk5.saifu2.view.fragment.menu.TopMenuFragment;
@@ -32,8 +35,7 @@ public class TopActivity extends BaseActivity implements TopMenuFragment.EventLi
         try {
             executingShortcutService = new ExecutingShortcutService(
                     this,
-                    topFragment,
-                    this
+                    topFragment
             );
         } catch (Exception e) {
             super.onDestroy();
@@ -89,7 +91,33 @@ public class TopActivity extends BaseActivity implements TopMenuFragment.EventLi
 
     public void onItemLongClick(int position)
     {
-        Toast.makeText(this, String.valueOf(position), Toast.LENGTH_SHORT).show();
+        try {
+            if (executingShortcutService.isShopCase(position)) {
+                Account account = executingShortcutService.getAccount(position, 0);
+                int beforeBalance = account.getBalance();
+                int afterBalance = executingShortcutService.createReceipt(position);
+                new AlertDialog.Builder(this)
+                        .setTitle("Result")
+                        .setMessage(String.format(Locale.JAPAN, "%s : %,d -> %,d", account.getName(), beforeBalance, afterBalance))
+                        .setPositiveButton("OK", null)
+                        .show();
+            } else if (executingShortcutService.isTransferCase(position)) {
+                Account toAccount = executingShortcutService.getAccount(position, 0);
+                int beforeToBalance = toAccount.getBalance();
+                Account fromAccount = executingShortcutService.getAccount(position, 1);
+                int beforeFromBalance = fromAccount.getBalance();
+
+                int value = executingShortcutService.transferMoney(position);
+                new AlertDialog.Builder(this)
+                        .setTitle("Result")
+                        .setMessage(String.format(Locale.JAPAN, "%s : %,d -> %,d" + "\n" + "%s : %,d -> %,d", toAccount.getName(), beforeToBalance, beforeToBalance + value,
+                                fromAccount.getName(), beforeFromBalance, beforeFromBalance - value))
+                        .setPositiveButton("OK", null)
+                        .show();
+            }
+        } catch (Exception e) {
+            showError("cannot execute shortcut.");
+        }
     }
 
 }

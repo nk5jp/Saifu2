@@ -12,6 +12,7 @@ public class CostViewModel {
 
     @Getter @Setter
     int totalExpected;
+    @Getter @Setter
     int totalResult;
     @Getter @Setter
     List<Cost> costs;

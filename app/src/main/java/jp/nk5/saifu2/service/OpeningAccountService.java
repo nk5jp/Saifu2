@@ -2,7 +2,10 @@ package jp.nk5.saifu2.service;
 
 import android.content.Context;
 
+import java.util.List;
+
 import jp.nk5.saifu2.BankActivity;
+import jp.nk5.saifu2.domain.Account;
 import jp.nk5.saifu2.domain.repository.AccountRepository;
 import jp.nk5.saifu2.infra.repository.AccountRepositorySQLite;
 import jp.nk5.saifu2.view.fragment.AccountFragment;
@@ -51,11 +54,14 @@ public class OpeningAccountService {
     }
 
     /**
-     * 画面モデルの口座リストを最新化する．これ自体が表示更新処理は担っていない点に注意．
+     * 画面モデルの口座リストを最新化し，合計金額も更新する．これ自体が表示更新処理は担っていない点に注意．
      */
     public void updateAccountList() throws Exception
     {
-        updateViewListener.getViewModel().setAccounts(repository.getAllAccount());
+        List<Account> accounts = repository.getAllAccount();
+        updateViewListener.getViewModel().setAccounts(accounts);
+        int sum = accounts.stream().mapToInt(Account::getBalance).sum();
+        updateViewListener.getViewModel().setSum(sum);
     }
 
     /**

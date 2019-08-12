@@ -2,7 +2,10 @@ package jp.nk5.saifu2.service;
 
 import android.content.Context;
 
+import java.util.List;
+
 import jp.nk5.saifu2.AccountBookActivity;
+import jp.nk5.saifu2.domain.Cost;
 import jp.nk5.saifu2.domain.repository.CostRepository;
 import jp.nk5.saifu2.infra.repository.CostRepositorySQLite;
 import jp.nk5.saifu2.view.fragment.CostFragment;
@@ -33,7 +36,10 @@ public class SearchingCostService {
      */
     public void updateCostList(int year, int month) throws Exception
     {
-        updateViewListener.getViewModel().setCosts(repository.getSpecificCost(year, month));
+        List<Cost> costs = repository.getSpecificCost(year, month);
+        updateViewListener.getViewModel().setCosts(costs);
+        updateViewListener.getViewModel().setTotalResult(costs.stream().mapToInt(Cost::getResult).sum());
+        updateViewListener.getViewModel().setTotalExpected(costs.stream().mapToInt(Cost::getEstimate).sum());
     }
 
     public void getSpecificCost(int date)

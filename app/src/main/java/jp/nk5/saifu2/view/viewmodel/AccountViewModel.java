@@ -11,6 +11,8 @@ import lombok.Setter;
 public class AccountViewModel {
 
     @Getter @Setter
+    private int sum;
+    @Getter @Setter
     private List<Account> accounts;
 
 }
