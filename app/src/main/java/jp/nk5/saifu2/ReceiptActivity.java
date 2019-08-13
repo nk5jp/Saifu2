@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -193,6 +194,8 @@ public class ReceiptActivity extends BaseActivity implements ListView.OnItemLong
         listView.setAdapter(new ReceiptDetailListAdapter(this, android.R.layout.simple_list_item_1, viewModel.getReceiptDetails()));
         TextView textView = findViewById(R.id.textView1);
         textView.setText(String.format(Locale.JAPAN, "SUM: %,d円", viewModel.getSum()));
+        EditText editText = findViewById(R.id.editText1);
+        editText.setText("");
     }
 
     public void showError(String error)

@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Locale;
 
 import jp.nk5.saifu2.domain.Account;
 
@@ -35,7 +36,7 @@ public class AccountListAdapter extends ArrayAdapter<Account> {
         if (account != null)
         {
             TextView textView = view.findViewById(android.R.id.text1);
-            textView.setText(account.toString());
+            textView.setText(String.format(Locale.JAPAN, "%s : %,d円", account.getName(), account.getBalance()));
             if (!account.isOpened()) textView.setBackgroundColor(Color.GRAY);
             if (account.getBalance() < 0) textView.setTextColor(Color.RED);
         }

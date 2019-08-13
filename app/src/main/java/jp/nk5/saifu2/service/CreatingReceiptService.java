@@ -82,7 +82,7 @@ public class CreatingReceiptService {
         {
             costRepository.updateCostById(detail.getCost().getId(), detail.getValue());
         }
-        accountRepository.depositMoney(account.getId(), -sum);
+        accountRepository.depositMoneyWithoutHistory(account.getId(), -sum);
         return account.getBalance();
     }
 
@@ -98,7 +98,7 @@ public class CreatingReceiptService {
 
     public void deleteReceipt(int id) throws Exception
     {
-        accountRepository.depositMoney(receiptRepository.getReceiptById(id).getAccount().getId(), receiptRepository.getReceiptById(id).getSum());
+        accountRepository.depositMoneyWithoutHistory(receiptRepository.getReceiptById(id).getAccount().getId(), receiptRepository.getReceiptById(id).getSum());
         for (ReceiptDetail detail : receiptRepository.getReceiptDetailsByReceiptId(id))
         {
             costRepository.updateCostById(detail.getCost().getId(), - detail.getValue());
