@@ -85,6 +85,14 @@ public class AccountRepositorySQLite implements AccountRepository {
         transfers.add(transfer);
     }
 
+    public void depositMoneyWithoutHistory(int id, int value) throws Exception {
+
+        Account account = getAccount(id);
+        account.setBalance(account.getBalance() + value);
+        accountDAO.updateAccount(account);
+
+    }
+
     public void transferMoney(int debitId, int creditId, int value) throws Exception {
 
         Account debit = getAccount(debitId);

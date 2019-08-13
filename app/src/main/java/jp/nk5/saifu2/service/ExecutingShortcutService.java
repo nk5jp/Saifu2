@@ -92,7 +92,7 @@ public class ExecutingShortcutService {
         );
 
         costRepository.updateCostById(cost.getId(), sum);
-        accountRepository.depositMoney(account.getId(), -sum);
+        accountRepository.depositMoneyWithoutHistory(account.getId(), -sum);
         return account.getBalance();
     }
 
