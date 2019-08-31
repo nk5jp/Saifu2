@@ -7,6 +7,7 @@ import android.view.View;
 
 import java.util.Calendar;
 
+import jp.nk5.saifu2.domain.util.MyDate;
 import jp.nk5.saifu2.service.CreatingCostService;
 import jp.nk5.saifu2.service.CreatingTemplateService;
 import jp.nk5.saifu2.service.SearchingCostService;
@@ -36,8 +37,8 @@ public class AccountBookActivity extends BaseActivity
     private SearchingCostService searchingCostService;
 
     private AccountBookMenu currentMenu;
-    private int year;
-    private int month;
+    private MyDate selectedMonth;
+    private MyDate thisMonth;
 
     /**
      * 各フラグメントのインスタンス初期生成を行い，現在メニューを初期設定する．
@@ -56,8 +57,10 @@ public class AccountBookActivity extends BaseActivity
 
         currentMenu = AccountBookMenu.COST;
         Calendar calendar = Calendar.getInstance();
-        year = calendar.get(Calendar.YEAR);
-        month = calendar.get(Calendar.MONTH) + 1;
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        thisMonth = new MyDate(year, month);
+        selectedMonth = new MyDate(year, month);
     }
 
     /**
@@ -112,7 +115,7 @@ public class AccountBookActivity extends BaseActivity
      */
     private void setSearchingCostScreen() throws Exception
     {
-        searchingCostService.updateCostList(year, month);
+        searchingCostService.updateCostList(thisMonth.getYear(), thisMonth.getMonth());
         fragmentManager.beginTransaction()
                 .replace(R.id.layout_menu, new AccountBookMenuFragment(), AccountBookMenuFragment.getTagName())
                 .replace(R.id.layout_form, new SearchingCostFragment(), SearchingCostFragment.getTagName())
@@ -140,7 +143,7 @@ public class AccountBookActivity extends BaseActivity
      */
     private void setCreatingCostScreen() throws Exception
     {
-        searchingCostService.updateCostList(year, month);
+        searchingCostService.updateCostList(thisMonth.getYear(), thisMonth.getMonth());
         fragmentManager.beginTransaction()
                 .replace(R.id.layout_menu, new AccountBookMenuFragment(), AccountBookMenuFragment.getTagName())
                 .replace(R.id.layout_form, new CreatingCostFragment(), CreatingCostFragment.getTagName())
@@ -170,7 +173,7 @@ public class AccountBookActivity extends BaseActivity
     public void onClickApplyButton(View view)
     {
         try {
-            creatingCostService.createCostFromTemplate(year, month);
+            creatingCostService.createCostFromTemplate(thisMonth.getYear(), thisMonth.getMonth());
         } catch (Exception e) {
             showError("Failed to Create cost.");
         }
@@ -185,7 +188,8 @@ public class AccountBookActivity extends BaseActivity
     {
         try {
             int date = getIntFromEditText(R.id.editText1);
-            searchingCostService.getSpecificCost(date);
+            selectedMonth = new MyDate(date);
+            searchingCostService.getSpecificCost(selectedMonth.getFullDate());
         } catch (Exception e) {
             showError("enter integer with YYYYMM format");
         }
@@ -201,7 +205,7 @@ public class AccountBookActivity extends BaseActivity
         try {
             String name = getStringFromEditText(R.id.editText1);
             int estimate = getIntFromEditText(R.id.editText2);
-            creatingCostService.createCostFromExtra(year, month, name, estimate);
+            creatingCostService.createCostFromExtra(selectedMonth.getYear(), selectedMonth.getMonth(), name, estimate);
         } catch (Exception e) {
             showError("Failed to Create cost.");
         }
@@ -226,7 +230,7 @@ public class AccountBookActivity extends BaseActivity
     public boolean onCostItemLongClick(int position)
     {
         int id = costFragment.getViewModel().getCosts().get(position).getId();
-        searchingCostService.updateCostStatus(id, year, month);
+        searchingCostService.updateCostStatus(id, selectedMonth.getYear(), selectedMonth.getMonth());
         return true;
     }
 
